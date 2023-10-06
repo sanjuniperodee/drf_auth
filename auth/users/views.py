@@ -106,7 +106,7 @@ def add_to_favorite(request, userId, restaurantId):
 @api_view(['GET'])
 def get_favourites(request, userId):
     try:
-        user_fav = Favorites.objects.get(user=userId).first()
+        user_fav = Favorites.objects.get(user=userId)
         data = []
         for restaurant in user_fav.restaurants.all():
             tags = [tag.title for tag in restaurant.tags.all()]
