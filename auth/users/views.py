@@ -1,6 +1,7 @@
 import json
 import threading
 from asgiref.sync import async_to_sync
+from asgiref.sync import async_to_sync
 from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import status
@@ -177,7 +178,6 @@ def wait_for_redirect_url():
 
 
 @api_view(['POST'])
-@async_to_sync
 async def handle(request):
     global user_id
     data = json.loads(request.body.decode('utf-8'))
@@ -208,7 +208,6 @@ async def handle(request):
     return JsonResponse({'message': 'OK'}, status=200)
 
 @api_view(['GET'])
-@async_to_sync
 async def redirect_user(request, userId):
     global user_id, redirect_url
     wait_for_redirect_url()
