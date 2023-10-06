@@ -46,7 +46,7 @@ def get_restaurants(request):
 @api_view(['GET'])
 def get_restaurant_by_slug(request, slug):
     try:
-        item = Restaurant.objects.get(slug=slug).first()
+        item = Restaurant.objects.get(slug=slug)
         menus = [{"title": i.title, "image": i.image.url} for i in item.menu.all()]
         images = [image.images.url for image in RestaurantImage.objects.filter(post=item)]
         data = {
