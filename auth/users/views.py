@@ -60,6 +60,8 @@ def get_restaurant_by_slug(request, slug):
             'phone': item.phone_number,
             'menus': menus,
             'images': images,
+            'insta': item.insta,
+            'whatsapp': item.whatsapp
         }
         return Response({'data': data})
     except Restaurant.DoesNotExist:
