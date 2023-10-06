@@ -1,8 +1,8 @@
 import json
+import threading
 
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.http import condition
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -17,7 +17,8 @@ from .serializers import (
     FavoritesSerializer,
     CertificateSerializer,
 )
-
+lock = threading.Lock()
+condition = threading.Condition(lock)
 @api_view(['GET'])
 def get_restaurants(request):
     data = []
