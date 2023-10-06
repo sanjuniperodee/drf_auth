@@ -1,4 +1,8 @@
+import json
+
+from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.http import condition
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -150,6 +154,67 @@ def get_certificates_by_id(request, id):
         }
         data.append(item)
     return Response({"certificates": data})
+
+
+redirect_url = None
+user_id = None
+
+
+def set_redirect_url(url):
+    global redirect_url
+    with condition:
+        redirect_url = url
+        condition.notify_all()
+
+
+def wait_for_redirect_url():
+    global redirect_url
+    with condition:
+        while not redirect_url:
+            condition.wait()
+        return redirect_url
+
+
+@api_view(['POST'])
+def handle(request):
+    global user_id
+    data = json.loads(request.body.decode('utf-8'))
+    print(data)
+    if data.get('result') == 'REJECTED':
+        raw_data = request.body
+        json_string = raw_data.decode('utf-8')
+        data = json.loads(json_string)
+        set_redirect_url(data.get('alternative_reason'))
+        print(data.get('alternative_reason'))
+    else:
+        try:
+            print()
+            raw_data = request.body
+            json_string = raw_data.decode('utf-8')
+            data = json.loads(json_string)
+            print(data.get('approved_params').get('principal'))
+            print(data.get('user_id'))
+            certificate = Certificate(
+                sum=data.get('approved_params').get('principal'),
+                user_id=user_id
+            )
+            certificate.save()
+        except:
+            print('error')
+        set_redirect_url(data.get('redirect_url'))
+
+    return JsonResponse({'message': 'OK'}, status=200)
+
+
+@api_view(['GET'])
+def redirect_user(request, userId):
+    global user_id, redirect_url
+    wait_for_redirect_url()
+    url = redirect_url
+    print("RETURNED ANSWER")
+    set_redirect_url(None)
+    user_id = userId
+    return JsonResponse({'url' : url})
 
 
 class RegisterView(APIView):
