@@ -205,7 +205,7 @@ async def handle(request):
             print('error')
         set_redirect_url(data.get('redirect_url'))
 
-    return JsonResponse({'message': 'OK'}, status=200)
+    return Response({'message': 'OK'}, status=200)
 
 @api_view(['GET'])
 async def redirect_user(request, userId):
@@ -215,7 +215,7 @@ async def redirect_user(request, userId):
     print("RETURNED ANSWER")
     set_redirect_url(None)
     user_id = userId
-    return JsonResponse({'url': url})
+    return Response({'url': url})
 
 
 class RegisterView(APIView):
