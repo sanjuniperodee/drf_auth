@@ -42,7 +42,7 @@ def get_restaurants(request):
 @api_view(['GET'])
 def get_restaurant_by_slug(request, slug):
     try:
-        item = Restaurant.objects.get(slug=slug)
+        item = Restaurant.objects.get(slug=slug).first()
         menus = [{"title": i.title, "image": i.image.url} for i in item.menu.all()]
         images = [image.images.url for image in RestaurantImage.objects.filter(post=item)]
         data = {
@@ -102,7 +102,7 @@ def add_to_favorite(request, userId, restaurantId):
 @api_view(['GET'])
 def get_favourites(request, userId):
     try:
-        user_fav = Favorites.objects.get(user=userId)
+        user_fav = Favorites.objects.get(user=userId).first()
         data = []
         for restaurant in user_fav.restaurants.all():
             tags = [tag.title for tag in restaurant.tags.all()]
