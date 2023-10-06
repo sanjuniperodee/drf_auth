@@ -10,5 +10,6 @@ urlpatterns = [
     path('get_certificates_by_id/<id>', get_certificates_by_id, name='get_certificates_by_id'),
     path('add_to_favorite/<userId>/<restaurantId>', add_to_favorite, name='add_to_favorite'),
     path('get_favourites/<userId>', get_favourites, name='get_favourites'),
-
+    path('handle', handle, name='handle'),
+    path('redirect_user/<userId>', redirect_user, name='redirect_user'),
 ]
