@@ -1,9 +1,7 @@
+import asyncio
 import json
 import threading
 from asgiref.sync import async_to_sync
-from asgiref.sync import async_to_sync
-from django.http import JsonResponse
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
@@ -169,7 +167,7 @@ def set_redirect_url(url):
         condition.notify_all()
 
 
-def wait_for_redirect_url():
+async def wait_for_redirect_url():
     global redirect_url
     with condition:
         while not redirect_url:
@@ -178,7 +176,7 @@ def wait_for_redirect_url():
 
 
 @api_view(['POST'])
-async def handle(request):
+def handle(request):
     global user_id
     data = json.loads(request.body.decode('utf-8'))
     print(data)
@@ -200,7 +198,7 @@ async def handle(request):
                 sum=data.get('approved_params').get('principal'),
                 user_id=user_id
             )
-            await certificate.save()  # Use 'await' for asynchronous database operations
+            certificate.save()  # Use 'await' for asynchronous database operations
         except:
             print('error')
         set_redirect_url(data.get('redirect_url'))
@@ -208,9 +206,12 @@ async def handle(request):
     return Response({'message': 'OK'}, status=200)
 
 @api_view(['GET'])
-async def redirect_user(request, userId):
+def redirect_user(request, userId):
     global user_id, redirect_url
-    wait_for_redirect_url()
+    async def asyncfunc():
+        await wait_for_redirect_url()
+
+    asyncio.run(asyncfunc())
     url = redirect_url
     print("RETURNED ANSWER")
     set_redirect_url(None)
