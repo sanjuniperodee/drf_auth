@@ -1,4 +1,5 @@
 import asyncio
+import base64
 import json
 import threading
 from datetime import datetime, timedelta
@@ -231,7 +232,7 @@ def activate_certificate(request, certificate_id, restaurant_id):
 
     end_date = timezone.now() + timedelta(days=30 * 6)
 
-    code = generate_certificate_code(restaurant.title, certificate_id)
+    code = generate_certificate_code(restaurant.title, certificate_id, user_id, timezone.now())
 
     certificate.encode = code
     certificate.status = True
@@ -248,8 +249,12 @@ def activate_certificate(request, certificate_id, restaurant_id):
     # except:
 
 
-def generate_certificate_code(restaurant_title, certificate_id):
-    return f'{restaurant_title[:3].upper()}-{certificate_id}'
+def generate_certificate_code(restaurant_id, certificate_id, user_id, current_datetime):
+    data_to_encode = f'{certificate_id}-{restaurant_id}-{user_id}-{current_datetime}'
+
+    encoded_bytes = data_to_encode.encode('utf-8')
+    encoded_string = base64.b64encode(encoded_bytes).decode('utf-8')
+    return encoded_string
 
 
 class RegisterView(APIView):
