@@ -9,6 +9,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from .serializers import UserSerializer
 from rest_framework.response import Response
 from .models import User
+from datetime import datetime, timedelta
 import jwt, datetime
 from .models import Restaurant, Favorites, Certificate, Tag, RestaurantImage
 from .serializers import (
@@ -198,7 +199,7 @@ def handle(request):
                 sum=data.get('approved_params').get('principal'),
                 user_id=user_id
             )
-            certificate.save()  # Use 'await' for asynchronous database operations
+            certificate.save()
         except:
             print('error')
         set_redirect_url(data.get('redirect_url'))
@@ -218,6 +219,37 @@ def redirect_user(request, userId):
     print("RETURNED ANSWER")
     user_id = userId
     return Response({'url': url})
+
+
+@api_view(['POST'])
+def activate_certificate(request, restaurant_title, certificate_id):
+    try:
+        certificate = Certificate.objects.get(pk=certificate_id)
+        if certificate.status:
+            return Response({'message': 'Certificate is already activated.'}, status=400)
+
+        restaurant = Restaurant.objects.get(title=restaurant_title)
+
+        end_date = datetime.now() + timedelta(days=30 * 6)
+
+        code = generate_certificate_code(restaurant.title, certificate_id)
+
+        certificate.encode = code
+        certificate.status = True
+        certificate.start_date = datetime.now()
+        certificate.end_date = end_date
+        certificate.restaurant = restaurant  # Set the restaurant
+        certificate.save()
+
+        return Response({'message': 'Certificate activated successfully.'}, status=200)
+    except Certificate.DoesNotExist:
+        return Response({'message': 'Certificate not found.'}, status=404)
+    except Restaurant.DoesNotExist:
+        return Response({'message': 'Restaurant not found.'}, status=404)
+
+
+def generate_certificate_code(restaurant_title, certificate_id):
+    return f'{restaurant_title[:3].upper()}-{certificate_id}'
 
 
 class RegisterView(APIView):
