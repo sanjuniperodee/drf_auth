@@ -227,9 +227,6 @@ def activate_certificate(request, certificate_id, restaurant_id):
     print(restaurant_id)
     # try:
     certificate = Certificate.objects.get(pk=certificate_id)
-    if certificate.status:
-        return Response({'message': 'Certificate is already activated.'}, status=400)
-
     restaurant = Restaurant.objects.get(pk=restaurant_id)
 
     end_date = timezone.now() + timedelta(days=30 * 6)
