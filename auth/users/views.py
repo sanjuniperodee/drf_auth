@@ -4,6 +4,7 @@ import threading
 from datetime import datetime, timedelta
 
 from datetime import datetime, timedelta
+from django.utils import timezone
 import jwt
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -228,7 +229,7 @@ def activate_certificate(request, certificate_id, restaurant_title):
 
         restaurant = Restaurant.objects.get(title=restaurant_title)
 
-        end_date = datetime.now() + timedelta(days=30 * 6)
+        end_date = timezone.now() + timedelta(days=30 * 6)
 
         code = generate_certificate_code(restaurant.title, certificate_id)
 
