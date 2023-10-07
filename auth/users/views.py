@@ -224,29 +224,30 @@ def redirect_user(request, userId):
 def activate_certificate(request, certificate_id, restaurant_title):
     print(certificate_id)
     print(restaurant_title)
-    try:
-        certificate = Certificate.objects.get(pk=certificate_id)
-        if certificate.status:
-            return Response({'message': 'Certificate is already activated.'}, status=400)
+    # try:
+    certificate = Certificate.objects.get(pk=certificate_id)
+    if certificate.status:
+        return Response({'message': 'Certificate is already activated.'}, status=400)
 
-        restaurant = Restaurant.objects.get(title=restaurant_title)
+    restaurant = Restaurant.objects.get(title=restaurant_title)
 
-        end_date = timezone.now() + timedelta(days=30 * 6)
+    end_date = timezone.now() + timedelta(days=30 * 6)
 
-        code = generate_certificate_code(restaurant.title, certificate_id)
+    code = generate_certificate_code(restaurant.title, certificate_id)
 
-        certificate.encode = code
-        certificate.status = True
-        certificate.start_date = datetime.now()
-        certificate.end_date = end_date
-        certificate.restaurant = restaurant  # Set the restaurant
-        certificate.save()
+    certificate.encode = code
+    certificate.status = True
+    certificate.start_date = datetime.now()
+    certificate.end_date = end_date
+    certificate.restaurant = restaurant  # Set the restaurant
+    certificate.save()
 
-        return Response({'message': 'Certificate activated successfully.'}, status=200)
-    except Certificate.DoesNotExist:
-        return Response({'message': 'Certificate not found.'}, status=404)
-    except Restaurant.DoesNotExist:
-        return Response({'message': 'Restaurant not found.'}, status=404)
+    return Response({'message': 'Certificate activated successfully.'}, status=200)
+    # except Certificate.DoesNotExist:
+    #     return Response({'message': 'Certificate not found.'}, status=404)
+    # except Restaurant.DoesNotExist:
+    #     return Response({'message': 'Restaurant not found.'}, status=404)
+    # except:
 
 
 def generate_certificate_code(restaurant_title, certificate_id):
