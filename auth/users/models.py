@@ -50,7 +50,7 @@ class Restaurant(models.Model):
     whatsapp = models.CharField(max_length=255, null=True)
 
     def __str__(self):
-        return self.title
+        return self.title + self.pk
 
 
 class RestaurantImage(models.Model):

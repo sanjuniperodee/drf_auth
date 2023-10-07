@@ -39,6 +39,7 @@ def get_restaurants(request):
             'kitchen': i.kitchen,
             'average': i.average,
             'phone': i.phone_number,
+            'id': i.pk
         }
         data.append(item)
     return Response({"restaurants": data, "tags": all_tags})
