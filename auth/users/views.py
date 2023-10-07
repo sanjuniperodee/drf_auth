@@ -1,22 +1,20 @@
 import asyncio
 import json
 import threading
-from asgiref.sync import async_to_sync
+from datetime import datetime, timedelta
+
+from datetime import datetime, timedelta
+import jwt
 from rest_framework import status
 from rest_framework.decorators import api_view
-from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
-from .serializers import UserSerializer
 from rest_framework.response import Response
-from .models import User
-from datetime import datetime, timedelta
-import jwt, datetime
+from rest_framework.views import APIView
+
 from .models import Restaurant, Favorites, Certificate, Tag, RestaurantImage
-from .serializers import (
-    RestaurantSerializer,
-    FavoritesSerializer,
-    CertificateSerializer,
-)
+from .models import User
+from .serializers import UserSerializer
+
 lock = threading.Lock()
 condition = threading.Condition(lock)
 @api_view(['GET'])
