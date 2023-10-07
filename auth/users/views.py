@@ -144,7 +144,7 @@ def create_certificate(request):
 @api_view(['GET'])
 def get_certificates_by_id(request, id):
     data = []
-    for certificate in Certificate.objects.filter(user_id=id):
+    for certificate in Certificate.objects.filter(user=User.objects.get(pk=id)):
         item = {
             'id': certificate.pk,
             'sum': certificate.sum,
