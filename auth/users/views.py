@@ -222,15 +222,15 @@ def redirect_user(request, userId):
 
 
 @api_view(['POST'])
-def activate_certificate(request, certificate_id, restaurant_title):
+def activate_certificate(request, certificate_id, restaurant_id):
     print(certificate_id)
-    print(restaurant_title)
+    print(restaurant_id)
     # try:
     certificate = Certificate.objects.get(pk=certificate_id)
     if certificate.status:
         return Response({'message': 'Certificate is already activated.'}, status=400)
 
-    restaurant = Restaurant.objects.get(title=restaurant_title)
+    restaurant = Restaurant.objects.get(pk=restaurant_id)
 
     end_date = timezone.now() + timedelta(days=30 * 6)
 
