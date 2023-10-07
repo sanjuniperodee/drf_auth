@@ -12,14 +12,6 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
 
-class Certificate(models.Model):
-    sum = models.FloatField()
-    user_id = models.CharField(max_length=255, null=True, blank=True)
-    encode = models.CharField(max_length=255, null=True, blank=True)
-    status = models.BooleanField(default=False, blank=True)
-    start_date = models.DateTimeField(null=True, blank=True)
-    end_date = models.DateTimeField(null=True, blank=True)
-
 
 class Tag(models.Model):
     title = models.CharField(max_length=255)
@@ -66,5 +58,15 @@ class RestaurantImage(models.Model):
 
 
 class Favorites(models.Model):
-    user = models.CharField(max_length=255)
+    user = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
     restaurants = models.ManyToManyField(Restaurant, default=None, null=True)
+
+
+class Certificate(models.Model):
+    sum = models.FloatField()
+    user = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
+    encode = models.CharField(max_length=255, null=True, blank=True)
+    status = models.BooleanField(default=False, blank=True)
+    start_date = models.DateTimeField(null=True, blank=True)
+    end_date = models.DateTimeField(null=True, blank=True)
+    restaurant = models.ForeignKey(Restaurant, default=None, on_delete=models.CASCADE)

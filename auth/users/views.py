@@ -95,7 +95,7 @@ def get_new_restaurants(request):
 @api_view(['POST'])
 def add_to_favorite(request, userId, restaurantId):
     try:
-        user_fav, created = Favorites.objects.get_or_create(user=userId)
+        user_fav, created = Favorites.objects.get_or_create(user=User.objects.get(pk=userId))
         restaurant = Restaurant.objects.get(pk=restaurantId)
         user_fav.restaurants.add(restaurant)
         user_fav.save()
@@ -106,7 +106,7 @@ def add_to_favorite(request, userId, restaurantId):
 @api_view(['GET'])
 def get_favourites(request, userId):
     try:
-        user_fav = Favorites.objects.get(user=userId)
+        user_fav = Favorites.objects.get(user=User.objects.get(pk=userId))
         data = []
         for restaurant in user_fav.restaurants.all():
             tags = [tag.title for tag in restaurant.tags.all()]
@@ -208,13 +208,14 @@ def handle(request):
 @api_view(['GET'])
 def redirect_user(request, userId):
     global user_id, redirect_url
+
     async def asyncfunc():
         await wait_for_redirect_url()
 
     asyncio.run(asyncfunc())
     url = redirect_url
-    print("RETURNED ANSWER")
     set_redirect_url(None)
+    print("RETURNED ANSWER")
     user_id = userId
     return Response({'url': url})
 
