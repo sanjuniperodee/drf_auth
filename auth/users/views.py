@@ -222,6 +222,8 @@ def redirect_user(request, userId):
 
 @api_view(['POST'])
 def activate_certificate(request, certificate_id, restaurant_title):
+    print(certificate_id)
+    print(restaurant_title)
     try:
         certificate = Certificate.objects.get(pk=certificate_id)
         if certificate.status:
