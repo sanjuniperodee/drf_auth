@@ -272,8 +272,8 @@ class LoginView(APIView):
             raise AuthenticationFailed("user not found")
         payload = {
             'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
-            'iat': datetime.datetime.utcnow()
+            'exp': datetime.utcnow() + timedelta(minutes=60),
+            'iat': datetime.utcnow()
         }
         token = jwt.encode(payload, 'sercet', algorithm='HS256').encode('utf-8')
         response = Response()
