@@ -154,7 +154,11 @@ def get_certificates_by_id(request, id):
             'status': certificate.status,
         }
         if certificate.status:
-            item += {
+            item = {
+                'id': certificate.pk,
+                'sum': certificate.sum,
+                'user_id': certificate.user_id,
+                'status': certificate.status,
                 'encode': certificate.encode,
                 'restaurant': certificate.restaurant,
                 'end_date': certificate.end_date
