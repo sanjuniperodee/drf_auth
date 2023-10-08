@@ -168,67 +168,43 @@ def get_certificates_by_id(request, id):
     return Response({"certificates": data})
 
 
-redirect_url = None
-user_id = None
-
-
-def set_redirect_url(url):
-    global redirect_url
-    with condition:
-        redirect_url = url
-        condition.notify_all()
-
-
-async def wait_for_redirect_url():
-    global redirect_url
-    with condition:
-        while not redirect_url:
-            condition.wait()
-        return redirect_url
-
+redirect_url = ''
+user_id = ''
 
 @api_view(['POST'])
 def handle(request):
-    global user_id
+    global user_id, redirect_url
     data = json.loads(request.body.decode('utf-8'))
     print(data)
     if data.get('result') == 'REJECTED':
         raw_data = request.body
         json_string = raw_data.decode('utf-8')
         data = json.loads(json_string)
-        set_redirect_url(data.get('alternative_reason'))
+        redirect_url = data.get('alternative_reason')
         print(data.get('alternative_reason'))
+    elif data.get('result') != 'APPROVED':
+        raw_data = request.body
+        json_string = raw_data.decode('utf-8')
+        data = json.loads(json_string)
+        certificate = Certificate(
+            sum=data.get('approved_params').get('principal'),
+            user=User.objects.get(pk=user_id)
+        )
+        certificate.save()
     else:
-        try:
-            print()
-            raw_data = request.body
-            json_string = raw_data.decode('utf-8')
-            data = json.loads(json_string)
-            print(data.get('approved_params').get('principal'))
-            print(data.get('user_id'))
-            certificate = Certificate(
-                sum=data.get('approved_params').get('principal'),
-                user_id=user_id
-            )
-            certificate.save()
-        except:
-            print('error')
-        set_redirect_url(data.get('redirect_url'))
+        redirect_url = data.get('redirect_url')
 
     return Response({'message': 'OK'}, status=200)
 
 @api_view(['GET'])
 def redirect_user(request, userId):
     global user_id, redirect_url
-
-    async def asyncfunc():
-        await wait_for_redirect_url()
-
-    asyncio.run(asyncfunc())
     url = redirect_url
-    set_redirect_url(None)
-    print("RETURNED ANSWER")
+    if(len(url) == 0):
+        return Response(status=500)
+    redirect_url = ''
     user_id = userId
+    print("RETURNED ANSWER")
     return Response({'url': url})
 
 
