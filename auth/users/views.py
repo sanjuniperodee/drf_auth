@@ -251,9 +251,9 @@ class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
+            serializer.save()
             payload = {
-                'id': user.id,
+                'id': request.data.id,
                 'exp': datetime.utcnow() + timedelta(minutes=60),
                 'iat': datetime.utcnow()
             }
