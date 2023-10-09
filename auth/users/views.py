@@ -253,7 +253,7 @@ class RegisterView(APIView):
         if serializer.is_valid():
             serializer.save()
             payload = {
-                'id': request.data.id,
+                'id': request.data['id'],
                 'exp': datetime.utcnow() + timedelta(minutes=60),
                 'iat': datetime.utcnow()
             }
