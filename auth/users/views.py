@@ -250,11 +250,23 @@ def generate_certificate_code(restaurant_id, certificate_id, user_id, current_da
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
-        print(request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            payload = {
+                'id': user.id,
+                'exp': datetime.utcnow() + timedelta(minutes=60),
+                'iat': datetime.utcnow()
+            }
+            token = jwt.encode(payload, 'sercet', algorithm='HS256').decode('utf-8')
 
+            # Set the JWT token in the response
+            response = Response()
+            response.set_cookie(key='jwt', value=token, httponly=True)
+            response.data = {
+                'token': token
+            }
+            return response
+        return Response(serializer.errors, status=400)
 
 class LoginView(APIView):
     def post(self, request):
