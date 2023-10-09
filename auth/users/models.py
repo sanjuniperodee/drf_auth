@@ -73,3 +73,11 @@ class Certificate(models.Model):
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
     restaurant = models.ForeignKey(Restaurant, default=None, on_delete=models.CASCADE)
+
+
+class Status(models.Model):
+    title = models.CharField(max_length=255)
+    body = models.TextField()
+
+    def __str__(self):
+        return self.title

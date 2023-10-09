@@ -13,7 +13,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Restaurant, Favorites, Certificate, Tag, RestaurantImage
+from .models import Restaurant, Favorites, Certificate, Tag, RestaurantImage, Status
 from .models import User
 from .serializers import UserSerializer
 
@@ -175,6 +175,10 @@ user_id = ''
 def handle(request):
     global user_id, redirect_url
     data = json.loads(request.body.decode('utf-8'))
+    status = Status(title='Выдано', body=request.body.decode('utf-8'))
+    if data.get('result'):
+        status.title = data.get('result')
+    status.save()
     print(data)
     if data.get('result') == 'REJECTED':
         raw_data = request.body
