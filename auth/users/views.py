@@ -3,6 +3,7 @@ import base64
 import json
 import threading
 from datetime import datetime, timedelta
+import requests
 
 from datetime import datetime, timedelta
 from django.utils import timezone
@@ -168,8 +169,8 @@ def get_certificates_by_id(request, id):
     return Response({"certificates": data})
 
 
-redirect_url = ''
-user_id = ''
+redirect_url = {}
+user_id = {}
 
 @api_view(['POST'])
 def handle(request):
@@ -184,7 +185,7 @@ def handle(request):
         raw_data = request.body
         json_string = raw_data.decode('utf-8')
         data = json.loads(json_string)
-        redirect_url = data.get('alternative_reason')
+        redirect_url[data.get('uuid')] = data.get('alternative_reason')
         print(data.get('alternative_reason'))
     elif data.get('result') != 'APPROVED':
         raw_data = request.body
@@ -192,22 +193,21 @@ def handle(request):
         data = json.loads(json_string)
         certificate = Certificate(
             sum=data.get('approved_params').get('principal'),
-            user=User.objects.get(pk=user_id)
+            user=User.objects.get(pk=data.get('approved_params').get('reference_id'))
         )
         certificate.save()
     else:
-        redirect_url = data.get('redirect_url')
+        redirect_url[data.get('uuid')] = data.get('redirect_url')
 
     return Response({'message': 'OK'}, status=200)
 
 @api_view(['GET'])
-def redirect_user(request, userId):
+def redirect_user(request, uuid):
     global user_id, redirect_url
-    url = redirect_url
+    url = redirect_url[uuid]
     if(len(url) == 0):
         return Response(status=500)
-    redirect_url = ''
-    user_id = userId
+    redirect_url[uuid] = ''
     print("RETURNED ANSWER")
     return Response({'url': url})
 
@@ -219,9 +219,9 @@ def activate_certificate(request, certificate_id, restaurant_id):
     # try:
     certificate = Certificate.objects.get(pk=certificate_id)
     restaurant = Restaurant.objects.get(pk=restaurant_id)
-
+    requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')' '').replace(' ', '').replace('_', '') + "&text=В вашем ресторане был активирован сертификат на сумму " + certificate.sum + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     end_date = timezone.now() + timedelta(days=30 * 6)
-
+    
     code = generate_certificate_code(restaurant.title, certificate_id, user_id, timezone.now())
 
     certificate.encode = code
