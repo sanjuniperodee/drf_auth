@@ -252,8 +252,10 @@ class RegisterView(APIView):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            phone_number = request.data['phone_number']
+            user = User.objects.filter(phone_number=phone_number).first()
             payload = {
-                'id': request.data['id'],
+                'id': user.id,
                 'exp': datetime.utcnow() + timedelta(minutes=60),
                 'iat': datetime.utcnow()
             }
