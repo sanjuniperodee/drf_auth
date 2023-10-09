@@ -219,7 +219,6 @@ def activate_certificate(request, certificate_id, restaurant_id):
     # try:
     certificate = Certificate.objects.get(pk=certificate_id)
     restaurant = Restaurant.objects.get(pk=restaurant_id)
-    requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=В вашем ресторане был активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " +  + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     end_date = timezone.now() + timedelta(days=30 * 6)
     
     code = generate_certificate_code(restaurant.title, certificate_id, user_id, timezone.now())
