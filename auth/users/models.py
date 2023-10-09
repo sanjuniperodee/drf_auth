@@ -72,7 +72,7 @@ class Certificate(models.Model):
     status = models.BooleanField(default=False, blank=True)
     start_date = models.DateTimeField(null=True, blank=True)
     end_date = models.DateTimeField(null=True, blank=True)
-    restaurant = models.ForeignKey(Restaurant, default=None, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, default=None, on_delete=models.CASCADE, null=True)
 
 
 class Status(models.Model):
