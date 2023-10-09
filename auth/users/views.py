@@ -259,7 +259,7 @@ class RegisterView(APIView):
                 'exp': datetime.utcnow() + timedelta(minutes=60),
                 'iat': datetime.utcnow()
             }
-            token = jwt.encode(payload, 'sercet', algorithm='HS256').decode('utf-8')
+            token = jwt.encode(payload, 'sercet', algorithm='HS256').encode('utf-8')
 
             # Set the JWT token in the response
             response = Response()
