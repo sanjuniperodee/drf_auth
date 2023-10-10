@@ -11,6 +11,6 @@ urlpatterns = [
     path('add_to_favorite/<userId>/<restaurantId>', add_to_favorite, name='add_to_favorite'),
     path('get_favourites/<userId>', get_favourites, name='get_favourites'),
     path('handle', handle, name='handle'),
-    path('redirect_user/<userId>', redirect_user, name='redirect_user'),
+    path('redirect_user/<uuid>', redirect_user, name='redirect_user'),
     path('activate_certificate/<certificate_id>/<restaurant_id>', activate_certificate, name='activate_certificate')
 ]

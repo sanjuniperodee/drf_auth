@@ -170,7 +170,6 @@ def get_certificates_by_id(request, id):
 
 
 redirect_url = {}
-user_id = {}
 
 @api_view(['POST'])
 def handle(request):
@@ -203,7 +202,7 @@ def handle(request):
 
 @api_view(['GET'])
 def redirect_user(request, uuid):
-    global user_id, redirect_url
+    global redirect_url
     url = redirect_url[uuid]
     if(len(url) == 0):
         return Response(status=500)
