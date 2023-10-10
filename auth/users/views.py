@@ -186,13 +186,13 @@ def handle(request):
         data = json.loads(json_string)
         redirect_url[data.get('uuid')] = data.get('alternative_reason')
         print(data.get('alternative_reason'))
-    elif data.get('result') != 'APPROVED':
+    elif data.get('status') == 'ISSUED':
         raw_data = request.body
         json_string = raw_data.decode('utf-8')
         data = json.loads(json_string)
         certificate = Certificate(
             sum=data.get('approved_params').get('principal'),
-            user=User.objects.get(pk=data.get('approved_params').get('reference_id'))
+            user=User.objects.get(pk=data.get('reference_id'))
         )
         certificate.save()
     else:
