@@ -221,7 +221,7 @@ def activate_certificate(request, certificate_id, restaurant_id):
     end_date = timezone.now() + timedelta(days=30 * 6)
     
     code = generate_certificate_code(restaurant.title, certificate_id, timezone.now())
-
+    certificate.start_date = timezone.now()
     certificate.encode = code
     certificate.status = True
     certificate.start_date = datetime.now()
