@@ -5,6 +5,10 @@ import threading
 from datetime import datetime, timedelta
 import requests
 
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 from datetime import datetime, timedelta
 from django.utils import timezone
 import jwt
@@ -180,6 +184,31 @@ def handle(request):
     if data.get('result'):
         status.title = data.get('result')
     status.save()
+    html_content = """
+    <html>
+    <body>
+        <h1>Hello, This is an HTML Email</h1>
+        <p>This email is formatted using HTML.</p>
+    </body>
+    </html>
+    """
+
+    message = MIMEMultipart()
+    message.attach(MIMEText(html_content, "html"))
+    message["From"] = "87082420482@gmail.com"
+    message["To"] = "admin@reddel.kz"
+    message["Subject"] = "Новый запрос"
+
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+    smtp_username = "87082420482@gmail.com"
+    smtp_password = "azru wyrs mjcl txde"
+
+    server = smtplib.SMTP(smtp_server, smtp_port)
+    server.starttls()
+    server.login(smtp_username, smtp_password)
+    server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
+    server.quit()
     print(data)
     if data.get('result') == 'REJECTED':
         raw_data = request.body
