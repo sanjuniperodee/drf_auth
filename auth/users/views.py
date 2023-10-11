@@ -173,7 +173,7 @@ redirect_url = {}
 
 @api_view(['POST'])
 def handle(request):
-    global user_id, redirect_url
+    global redirect_url
     data = json.loads(request.body.decode('utf-8'))
     status = Status(title='Выдано', body=request.body.decode('utf-8'))
     if data.get('result'):
@@ -220,7 +220,7 @@ def activate_certificate(request, certificate_id, restaurant_id):
     restaurant = Restaurant.objects.get(pk=restaurant_id)
     end_date = timezone.now() + timedelta(days=30 * 6)
     
-    code = generate_certificate_code(restaurant.title, certificate_id, user_id, timezone.now())
+    code = generate_certificate_code(restaurant.title, certificate_id, timezone.now())
 
     certificate.encode = code
     certificate.status = True
