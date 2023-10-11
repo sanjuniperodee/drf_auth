@@ -239,8 +239,8 @@ def activate_certificate(request, certificate_id, restaurant_id):
     # except:
 
 
-def generate_certificate_code(restaurant_id, certificate_id, user_id, current_datetime):
-    data_to_encode = f'{certificate_id}-{restaurant_id}-{user_id}-{current_datetime}'
+def generate_certificate_code(restaurant_id, certificate_id, current_datetime):
+    data_to_encode = f'{certificate_id}-{restaurant_id}-{current_datetime}'
 
     encoded_bytes = data_to_encode.encode('utf-8')
     encoded_string = base64.b64encode(encoded_bytes).decode('utf-8')
