@@ -48,7 +48,7 @@ class Restaurant(models.Model):
     novy = models.BooleanField(default=False)
     insta = models.CharField(max_length=255, null=True)
     whatsapp = models.CharField(max_length=255, null=True)
-
+    work_hours = models.CharField(max_length=255, null=True)
     def __str__(self):
         return self.title + ": " + str(self.pk)
 

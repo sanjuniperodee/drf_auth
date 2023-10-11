@@ -58,6 +58,7 @@ def get_restaurant_by_slug(request, slug):
             'title': item.title,
             'description': item.description,
             'tags': [tag.title for tag in item.tags.all()],
+            'work_hours': item.work_hours.split(';'),
             'image': item.image.url,
             'prices': item.prices.split(','),
             'slug': item.slug,
@@ -221,7 +222,6 @@ def activate_certificate(request, certificate_id, restaurant_id):
     end_date = timezone.now() + timedelta(days=30 * 6)
     
     code = generate_certificate_code(restaurant.title, certificate_id, timezone.now())
-    certificate.start_date = timezone.now()
     certificate.encode = code
     certificate.status = True
     certificate.start_date = datetime.now()
