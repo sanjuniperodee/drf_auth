@@ -184,25 +184,16 @@ def handle(request):
     if data.get('result'):
         status.title = data.get('result')
     status.save()
-    html_content = """
-    <html>
-    <body>
-        <h1>Hello, This is an HTML Email</h1>
-        <p>This email is formatted using HTML.</p>
-    </body>
-    </html>
-    """
-
     message = MIMEMultipart()
-    message.attach(MIMEText(html_content, "html"))
-    message["From"] = "87082420482@gmail.com"
+    message.attach(MIMEText(status.body))
+    message["From"] = "87082420482b@gmail.com"
     message["To"] = "admin@reddel.kz"
     message["Subject"] = "Новый запрос"
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
-    smtp_username = "87082420482@gmail.com"
-    smtp_password = "azru wyrs mjcl txde"
+    smtp_username = "87082420482b@gmail.com"
+    smtp_password = "zhcr htfb lgzh xxjx"
 
     server = smtplib.SMTP(smtp_server, smtp_port)
     server.starttls()
@@ -220,11 +211,28 @@ def handle(request):
         raw_data = request.body
         json_string = raw_data.decode('utf-8')
         data = json.loads(json_string)
+        user = User.objects.get(pk=data.get('reference_id'))
         certificate = Certificate(
             sum=data.get('approved_params').get('principal'),
-            user=User.objects.get(pk=data.get('reference_id'))
+            user=user
         )
         certificate.save()
+        recipient_email = '87779571856b@gmail.com'
+        with open("auth\\template.html", "r") as f:
+            email_template = f.read()
+        customer_name = "Акжонов Досжан Дарахнович"
+        certificate_amount = "30000 ₸"
+        email_template = email_template.replace(customer_name, user.first_name)
+        email_template = email_template.replace(certificate_amount, str(certificate.sum))
+        message = MIMEMultipart()
+        message["From"] = smtp_username
+        message["To"] = recipient_email
+        message["Subject"] = "Поздравляем! У вас новый сертификат"
+        message.attach(MIMEText(email_template, "html"))
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(smtp_username, smtp_password)
+            server.sendmail(smtp_username, recipient_email, message.as_string())
     else:
         redirect_url[data.get('uuid')] = data.get('redirect_url')
 
@@ -258,7 +266,25 @@ def activate_certificate(request, certificate_id, restaurant_id):
     certificate.restaurant = restaurant  # Set the restaurant
     certificate.save()
     requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=В вашем ресторане был активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code) + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
-
+    user = User.objects.get(pk=certificate.user.id)
+    recipient_email = user.email
+    with open("../template.html", "r") as f:
+        email_template = f.read()
+    customer_name = "Акжонов Досжан Дарахнович"
+    certificate_amount = "30000 ₸"
+    smtp_username = "87082420482b@gmail.com"
+    smtp_password = "zhcr htfb lgzh xxjx"
+    email_template = email_template.replace(customer_name, user.first_name)
+    email_template = email_template.replace(certificate_amount, certificate.sum)
+    message = MIMEMultipart()
+    message["From"] = smtp_username
+    message["To"] = recipient_email
+    message["Subject"] = "Поздравляем! У вас новый сертификат"
+    message.attach(MIMEText(email_template, "html"))
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(smtp_username, recipient_email, message.as_string())
 
     return Response({'message': 'Certificate activated successfully.'}, status=200)
     # except Certificate.DoesNotExist:
