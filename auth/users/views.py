@@ -269,7 +269,7 @@ def activate_certificate(request, certificate_id, restaurant_id):
            "\nНомер телефона: " + user.phone_number
     requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     recipient_email = user.email
-    with open("../template.html", "r") as f:
+    with open("auth\\template.html", "r") as f:
         email_template = f.read()
     customer_name = "Акжонов Досжан Дарахнович"
     certificate_amount = "30000 ₸"
