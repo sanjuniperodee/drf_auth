@@ -179,8 +179,8 @@ redirect_url = {}
 @api_view(['POST'])
 def handle(request):
     global redirect_url
-    data = json.loads(request.body.decode('utf-8'))
-    status = Status(title='Выдано', body=request.body.decode('utf-8'))
+    data = json.loads(request.body)
+    status = Status(title='Выдано', body=str(data))
     if data.get('result'):
         status.title = data.get('result')
     status.save()
@@ -221,6 +221,8 @@ def handle(request):
             email_template = f.read()
         customer_name = "Акжонов Досжан Дарахнович"
         certificate_amount = "30000 ₸"
+        smtp_username = "87082420482b@gmail.com"
+        smtp_password = "zhcr htfb lgzh xxjx"
         email_template = email_template.replace(customer_name, user.first_name)
         email_template = email_template.replace(certificate_amount, str(certificate.sum))
         message = MIMEMultipart()
@@ -276,11 +278,11 @@ def activate_certificate(request, certificate_id, restaurant_id):
     smtp_username = "87082420482b@gmail.com"
     smtp_password = "zhcr htfb lgzh xxjx"
     email_template = email_template.replace(customer_name, user.first_name)
-    email_template = email_template.replace(certificate_amount, certificate.sum)
+    email_template = email_template.replace(certificate_amount, str(certificate.sum))
     message = MIMEMultipart()
     message["From"] = smtp_username
     message["To"] = recipient_email
-    message["Subject"] = "Поздравляем! У вас новый сертификат"
+    message["Subject"] = "Поздравляем! Вы активировали сертификат"
     message.attach(MIMEText(email_template, "html"))
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
