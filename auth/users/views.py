@@ -217,7 +217,6 @@ def handle(request):
             user=user
         )
         certificate.save()
-        recipient_email = '87779571856b@gmail.com'
         with open("auth\\template.html", "r") as f:
             email_template = f.read()
         customer_name = "Акжонов Досжан Дарахнович"
@@ -226,13 +225,13 @@ def handle(request):
         email_template = email_template.replace(certificate_amount, str(certificate.sum))
         message = MIMEMultipart()
         message["From"] = smtp_username
-        message["To"] = recipient_email
+        message["To"] = user.email
         message["Subject"] = "Поздравляем! У вас новый сертификат"
         message.attach(MIMEText(email_template, "html"))
         with smtplib.SMTP("smtp.gmail.com", 587) as server:
             server.starttls()
             server.login(smtp_username, smtp_password)
-            server.sendmail(smtp_username, recipient_email, message.as_string())
+            server.sendmail(smtp_username, user.email, message.as_string())
     else:
         redirect_url[data.get('uuid')] = data.get('redirect_url')
 
@@ -265,8 +264,10 @@ def activate_certificate(request, certificate_id, restaurant_id):
     certificate.end_date = end_date
     certificate.restaurant = restaurant  # Set the restaurant
     certificate.save()
-    requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=В вашем ресторане был активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code) + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     user = User.objects.get(pk=certificate.user.id)
+    text = "В вашем ресторане был активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code)[:10] + "\nФИО: " + user.first_name + " " + user.last_name + \
+           "\nНомер телефона: " + user.phone_number
+    requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     recipient_email = user.email
     with open("../template.html", "r") as f:
         email_template = f.read()
