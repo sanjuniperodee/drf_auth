@@ -187,7 +187,7 @@ def handle(request):
     message = MIMEMultipart()
     message.attach(MIMEText(status.body))
     message["From"] = "87082420482b@gmail.com"
-    message["To"] = "admin@reddel.kz"
+    message["To"] = "galyms24@gmail.com"
     message["Subject"] = "Новый запрос"
 
     smtp_server = "smtp.gmail.com"
@@ -198,7 +198,7 @@ def handle(request):
     server = smtplib.SMTP(smtp_server, smtp_port)
     server.starttls()
     server.login(smtp_username, smtp_password)
-    server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
+    server.sendmail(smtp_username, "galyms24@gmail.com", message.as_string())
     server.quit()
     print(data)
     if data.get('result') == 'REJECTED':
