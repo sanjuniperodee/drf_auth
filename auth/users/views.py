@@ -185,7 +185,7 @@ def handle(request):
         if data.get('result') == 'APPROVED':
             status.title = "Одобрено"
         else:
-            status.title = "Выдано"
+            status.title = "Отказано"
     status.save()
     message = MIMEMultipart()
     context = "Статус: " + status.title
