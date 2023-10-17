@@ -182,13 +182,24 @@ def handle(request):
     data = json.loads(request.body)
     status = Status(title='Выдано', body=str(data))
     if data.get('result'):
-        status.title = data.get('result')
+        if data.get('result') == 'APPROVED':
+            status.title = "Одобрено"
+        else:
+            status.title = "Выдано"
     status.save()
     message = MIMEMultipart()
-    message.attach(MIMEText(status.body))
+    context = "Статус: " + status.title
+    if data.get("first_name"):
+        context += "\nНа имя: " + data.get('first_name') + " " + data.get('last_name')
+    if data.get('alternative_reason'):
+        context += "\nПричина отказа: " + data.get('alternative_reason')
+    context += "\nНаминал: " + str(data.get('approved_params').get('principal'))
+    context += "\nСрок: " + str(data.get('approved_params').get('period'))
+
+    message.attach(MIMEText(context))
     message["From"] = "87082420482b@gmail.com"
     message["To"] = "galyms24@gmail.com"
-    message["Subject"] = "Новый запрос"
+    message["Subject"] = "Новая заявка"
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
