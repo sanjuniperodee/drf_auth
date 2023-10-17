@@ -217,7 +217,7 @@ def handle(request):
             user=user
         )
         certificate.save()
-        with open("auth\\template.html", "r") as f:
+        with open("auth//template.html", "r") as f:
             email_template = f.read()
         customer_name = "Акжонов Досжан Дарахнович"
         certificate_amount = "30000 ₸"
@@ -271,7 +271,7 @@ def activate_certificate(request, certificate_id, restaurant_id):
            "\nНомер телефона: " + user.phone_number
     requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     recipient_email = user.email
-    with open("auth\\template.html", "r") as f:
+    with open("auth//template.html", "r") as f:
         email_template = f.read()
     customer_name = "Акжонов Досжан Дарахнович"
     certificate_amount = "30000 ₸"
@@ -314,7 +314,7 @@ class RegisterView(APIView):
             user = User.objects.filter(phone_number=phone_number).first()
             payload = {
                 'id': user.id,
-                'exp': datetime.utcnow() + timedelta(minutes=60),
+                'exp': datetime.utcnow() + timedelta(hours=24),
                 'iat': datetime.utcnow()
             }
             token = jwt.encode(payload, 'sercet', algorithm='HS256').encode('utf-8')
@@ -336,7 +336,7 @@ class LoginView(APIView):
             raise AuthenticationFailed("user not found")
         payload = {
             'id': user.id,
-            'exp': datetime.utcnow() + timedelta(minutes=60),
+            'exp': datetime.utcnow() + timedelta(hours=24),
             'iat': datetime.utcnow()
         }
         token = jwt.encode(payload, 'sercet', algorithm='HS256').encode('utf-8')
