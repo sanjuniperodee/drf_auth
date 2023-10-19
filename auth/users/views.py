@@ -322,7 +322,7 @@ class CheckUserView(APIView):
         phone_number = request.data['phone_number']
         email = request.data['email']
 
-        if len(User.objects.filter(phone_number=phone_number)) + len(User.objects.filter(email=email)) > 0:
+        if len(User.objects.filter(phone_number=phone_number)) + len(User.objects.filter(email=email)) == 0:
             return Response({}, status=200)
         return Response({}, status=400)
 
