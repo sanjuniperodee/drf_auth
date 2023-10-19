@@ -316,6 +316,15 @@ def generate_certificate_code(restaurant_id, certificate_id, current_datetime):
     return encoded_string
 
 
+class CheckUserView(APIView):
+
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response({}, status=200)
+        return Response(serializer.errors, status=400)
+
+
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
