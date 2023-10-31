@@ -19,9 +19,11 @@ class StatusAdmin(admin.ModelAdmin):
     list_filter = ('title',)
     # list_display = ('id', 'user', 'restaurant', 'status',)
 
+
 @admin.register(Restaurant)
 class PostAdmin(admin.ModelAdmin):
     inlines = [PostImageAdmin]
+    list_display = ('title', 'id', 'phone_number', 'prices', 'description',)
 
     class Meta:
         model = Restaurant
