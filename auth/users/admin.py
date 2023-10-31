@@ -6,6 +6,18 @@ from .models import Restaurant, RestaurantImage, Tag, Certificate, Favorites, Im
 class PostImageAdmin(admin.StackedInline):
     model = RestaurantImage
 
+class CertificateAdmin(admin.ModelAdmin):
+    list_filter = ('status', 'restaurant', 'start_date', 'end_date')
+    list_display = ('id', 'user', 'restaurant', 'status',)
+
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('id', 'first_name', 'last_name', 'email', 'phone_number')
+
+
+class StatusAdmin(admin.ModelAdmin):
+    list_filter = ('title',)
+    # list_display = ('id', 'user', 'restaurant', 'status',)
 
 @admin.register(Restaurant)
 class PostAdmin(admin.ModelAdmin):
@@ -19,9 +31,11 @@ class PostAdmin(admin.ModelAdmin):
 class PostImageAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Certificate)
-class CertificateAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'restaurant', 'status',)
+admin.site.register(Certificate, CertificateAdmin)
+
+# @admin.register(Certificate)
+# class CertificateAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'user', 'restaurant', 'status',)
     # list_display = ('id', 'user', 'restaurant', 'status',)
     # actions = ['mark_as_activated', 'mark_as_non_activated']
     #
@@ -37,8 +51,8 @@ class CertificateAdmin(admin.ModelAdmin):
 # admin.site.register(Certificate)
 admin.site.register(Favorites)
 admin.site.register(Tag)
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(ImageModel)
-admin.site.register(Status)
+admin.site.register(Status, StatusAdmin)
 def make_refund_accepted(modeladmin, request, queryset):
     queryset.update(refund_requested=False, refund_granted=True)

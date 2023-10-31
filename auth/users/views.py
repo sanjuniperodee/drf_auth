@@ -5,6 +5,9 @@ import threading
 from datetime import datetime, timedelta
 import requests
 
+from django.shortcuts import render, get_object_or_404
+
+
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -383,3 +386,8 @@ class UserView(APIView):
         user = User.objects.filter(id=payload['id']).first()
         serializer = UserSerializer(user)
         return Response(serializer.data)
+
+
+@api_view(['GET'])
+def admin(request):
+    return render(request, 'admin.html')

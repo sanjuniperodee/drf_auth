@@ -3,12 +3,12 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.CharField(max_length=255, unique=True)
-    phone_number = models.CharField(max_length=255, unique=True)
+    first_name = models.CharField(max_length=255, verbose_name='Имя')
+    last_name = models.CharField(max_length=255, verbose_name='Фамилия')
+    email = models.CharField(max_length=255, unique=True, verbose_name='Электронная почта')
+    phone_number = models.CharField(max_length=255, unique=True, verbose_name='Номер телефона')
     username = models.CharField(max_length=255, unique=True, null=True)
-    password = models.CharField(max_length=255, null=True)
+    password = models.CharField(max_length=255, null=True, verbose_name='Пароль')
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -31,8 +31,8 @@ class Tag(models.Model):
 
 
 class ImageModel(models.Model):
-    title = models.CharField(max_length=255)
-    image = models.ImageField()
+    title = models.CharField(max_length=255, verbose_name='Название')
+    image = models.ImageField(verbose_name='Картинка')
     def __str__(self):
         return self.title
 
@@ -58,7 +58,7 @@ class Restaurant(models.Model):
     work_hours = models.CharField(max_length=255, null=True, verbose_name='Часы работы')
 
     class Meta:
-        verbose_name = 'Ресторна'
+        verbose_name = 'Ресторан'
         verbose_name_plural = 'Рестораны'
     def __str__(self):
         return self.title + ": " + str(self.pk)
@@ -77,7 +77,7 @@ class Favorites(models.Model):
 
 
 class Certificate(models.Model):
-    sum = models.FloatField(verbose_name='Логотип')
+    sum = models.FloatField(verbose_name='Сумма')
     user = models.ForeignKey(User, default=None, on_delete=models.CASCADE, verbose_name='Пользователь')
     encode = models.CharField(max_length=255, null=True, blank=True, verbose_name='Код сертификата')
     status = models.BooleanField(default=False, blank=True, verbose_name='Акитивирован')
