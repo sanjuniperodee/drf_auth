@@ -200,8 +200,8 @@ def handle(request):
     context += "\nСрок: " + str(data.get('approved_params').get('period'))
 
     message.attach(MIMEText(context))
-    message["From"] = "87082420482b@gmail.com"
-    message["To"] = "galyms24@gmail.com"
+    message["From"] = "support@reddel.kz"
+    message["To"] = "admin@reddel.kz"
     message["Subject"] = "Новая заявка"
 
     smtp_server = "smtp.gmail.com"
@@ -212,7 +212,7 @@ def handle(request):
     server = smtplib.SMTP(smtp_server, smtp_port)
     server.starttls()
     server.login(smtp_username, smtp_password)
-    server.sendmail(smtp_username, "galyms24@gmail.com", message.as_string())
+    server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
     server.quit()
     print(data)
     if data.get('result') == 'REJECTED':
@@ -287,7 +287,7 @@ def activate_certificate(request, certificate_id, restaurant_id):
     recipient_email = user.email
     with open("auth//template.html", "r") as f:
         email_template = f.read()
-    customer_name = "Акжонов Досжан Дарахнович"
+    customer_name = "Акжонов Досжан Дарахнович" 
     certificate_amount = "30000 ₸"
     smtp_username = "87082420482b@gmail.com"
     smtp_password = "zhcr htfb lgzh xxjx"
