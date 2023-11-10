@@ -302,6 +302,8 @@ def activate_certificate(request, certificate_id, restaurant_id):
         server.starttls()
         server.login(smtp_username, smtp_password)
         server.sendmail(smtp_username, recipient_email, message.as_string())
+        server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
+
 
     return Response({'message': 'Certificate activated successfully.'}, status=200)
     # except Certificate.DoesNotExist:
