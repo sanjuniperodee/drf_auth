@@ -235,7 +235,7 @@ def handle(request):
             user=user
         )
         certificate.save()
-        with open("auth\\template.html", "r") as f:
+        with open("auth//template.html", "r") as f:
             email_template = f.read()
         email_template = email_template.replace("Акжонов Досжан Дарахнович", user.first_name)
         email_template = email_template.replace("30000 ₸", str(certificate.sum))
@@ -298,7 +298,7 @@ def activate_certificate(request, certificate_id, restaurant_id):
            "\nНомер телефона: " + user.phone_number
     requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     recipient_email = user.email
-    with open("auth\\template.html", "r") as f:
+    with open("auth//template.html", "r") as f:
         email_template = f.read()
     smtp_username = "noreply.reddel@gmail.com"
     smtp_password = "hfft yumf trrp vczw"
