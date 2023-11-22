@@ -13,6 +13,7 @@ urlpatterns = [
     path('get_favourites/<userId>', get_favourites, name='get_favourites'),
     path('handle', handle, name='handle'),
     path('redirect_user/<uuid>', redirect_user, name='redirect_user'),
+    path('set_name/<uuid>/<first_name>/<last_name>', set_name, name='set_name'),
     path('activate_certificate/<certificate_id>/<restaurant_id>', activate_certificate, name='activate_certificate'),
     path('admin1', admin, name='admin1')
 ]

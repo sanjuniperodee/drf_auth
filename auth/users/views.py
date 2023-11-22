@@ -178,10 +178,12 @@ def get_certificates_by_id(request, id):
 
 
 redirect_url = {}
+name = {}
+surname = {}
 
 @api_view(['POST'])
 def handle(request):
-    global redirect_url
+    global redirect_url, name, surname
     data = json.loads(request.body)
     status = Status(title='Выдано', body=str(data))
     if data.get('result'):
@@ -194,6 +196,8 @@ def handle(request):
     context = "Статус: " + status.title
     if data.get("first_name"):
         context += "\nНа имя: " + data.get('first_name') + " " + data.get('last_name')
+    else:
+        context += "\nНа имя : " + name[data.get('uuid')] + " " + surname[data.get('uuid')]
     if data.get('alternative_reason'):
         context += "\nПричина отказа: " + data.get('alternative_reason')
     context += "\nНаминал: " + str(data.get('approved_params').get('principal'))
@@ -206,8 +210,8 @@ def handle(request):
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
-    smtp_username = "87082420482b@gmail.com"
-    smtp_password = "zhcr htfb lgzh xxjx"
+    smtp_username = "noreply.reddel@gmail.com"
+    smtp_password = "hfft yumf trrp vczw"
 
     server = smtplib.SMTP(smtp_server, smtp_port)
     server.starttls()
@@ -233,12 +237,9 @@ def handle(request):
         certificate.save()
         with open("auth\\template.html", "r") as f:
             email_template = f.read()
-        customer_name = "Акжонов Досжан Дарахнович"
-        certificate_amount = "30000 ₸"
-        smtp_username = "87082420482b@gmail.com"
-        smtp_password = "zhcr htfb lgzh xxjx"
-        email_template = email_template.replace(customer_name, user.first_name)
-        email_template = email_template.replace(certificate_amount, str(certificate.sum))
+        email_template = email_template.replace("Акжонов Досжан Дарахнович", user.first_name)
+        email_template = email_template.replace("30000 ₸", str(certificate.sum))
+        email_template = email_template.replace("408948", "Не активирован")
         message = MIMEMultipart()
         message["From"] = smtp_username
         message["To"] = user.email
@@ -248,6 +249,7 @@ def handle(request):
             server.starttls()
             server.login(smtp_username, smtp_password)
             server.sendmail(smtp_username, user.email, message.as_string())
+            server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
     else:
         redirect_url[data.get('uuid')] = data.get('redirect_url')
 
@@ -256,12 +258,23 @@ def handle(request):
 @api_view(['GET'])
 def redirect_user(request, uuid):
     global redirect_url
-    url = redirect_url[uuid]
-    if(len(url) == 0):
-        return Response(status=500)
-    redirect_url[uuid] = ''
-    print("RETURNED ANSWER")
-    return Response({'url': url})
+    try:
+        url = redirect_url[uuid]
+        if(len(url) == 0):
+            return Response(status=500)
+        redirect_url[uuid] = ''
+        print("RETURNED ANSWER")
+        return Response({'url': url})
+    except:
+        return Response({},status=500)
+
+
+@api_view(['POST'])
+def set_name(request, uuid, first_name, last_name):
+    global name, surname
+    name[uuid] = first_name
+    surname[uuid] = last_name
+    return Response(status=200)
 
 
 @api_view(['POST'])
@@ -281,18 +294,18 @@ def activate_certificate(request, certificate_id, restaurant_id):
     certificate.restaurant = restaurant  # Set the restaurant
     certificate.save()
     user = User.objects.get(pk=certificate.user.id)
-    text = "В вашем ресторане был активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code)[:10] + "\nФИО: " + user.first_name + " " + user.last_name + \
+    text = "В вашем ресторане " + restaurant.title + "был  активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code)[:10] + "\nФИО: " + user.first_name + " " + user.last_name + \
            "\nНомер телефона: " + user.phone_number
     requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     recipient_email = user.email
     with open("auth\\template.html", "r") as f:
         email_template = f.read()
-    customer_name = "Акжонов Досжан Дарахнович" 
-    certificate_amount = "30000 ₸"
-    smtp_username = "87082420482b@gmail.com"
-    smtp_password = "zhcr htfb lgzh xxjx"
-    email_template = email_template.replace(customer_name, user.first_name)
-    email_template = email_template.replace(certificate_amount, str(certificate.sum))
+    smtp_username = "noreply.reddel@gmail.com"
+    smtp_password = "hfft yumf trrp vczw"
+    email_template = email_template.replace("Акжонов Досжан Дарахнович" , user.first_name)
+    email_template = email_template.replace("30000 ₸", str(certificate.sum))
+    email_template = email_template.replace("408948", str(code)[:10])
+
     message = MIMEMultipart()
     message["From"] = smtp_username
     message["To"] = recipient_email
