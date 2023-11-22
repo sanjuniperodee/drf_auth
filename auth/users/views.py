@@ -285,15 +285,15 @@ def activate_certificate(request, certificate_id, restaurant_id):
     certificate = Certificate.objects.get(pk=certificate_id)
     restaurant = Restaurant.objects.get(pk=restaurant_id)
     end_date = timezone.now() + timedelta(days=30 * 6)
-    
-    code = generate_certificate_code(restaurant.title, certificate_id, timezone.now())
+    user = User.objects.get(pk=certificate.user.id)
+
+    code = generate_certificate_code(restaurant.title, certificate_id, timezone.now(), user.first_name, user.last_name)
     certificate.encode = code
     certificate.status = True
     certificate.start_date = datetime.now()
     certificate.end_date = end_date
     certificate.restaurant = restaurant  # Set the restaurant
     certificate.save()
-    user = User.objects.get(pk=certificate.user.id)
     text = "В вашем ресторане " + restaurant.title + "был  активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code)[:10] + "\nФИО: " + user.first_name + " " + user.last_name + \
            "\nНомер телефона: " + user.phone_number
     requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
@@ -326,8 +326,8 @@ def activate_certificate(request, certificate_id, restaurant_id):
     # except:
 
 
-def generate_certificate_code(restaurant_id, certificate_id, current_datetime):
-    data_to_encode = f'{certificate_id}-{restaurant_id}-{current_datetime}'
+def generate_certificate_code(restaurant_id, certificate_id, current_datetime, first_name, last_name):
+    data_to_encode = f'{certificate_id}-{restaurant_id}-{current_datetime}-{first_name}-{last_name}'
 
     encoded_bytes = data_to_encode.encode('utf-8')
     encoded_string = base64.b64encode(encoded_bytes).decode('utf-8')
