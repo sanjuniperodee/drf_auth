@@ -294,7 +294,7 @@ def activate_certificate(request, certificate_id, restaurant_id):
     certificate.end_date = end_date
     certificate.restaurant = restaurant  # Set the restaurant
     certificate.save()
-    text = "В вашем ресторане " + restaurant.title + "был  активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code)[:10] + "\nФИО: " + user.first_name + " " + user.last_name + \
+    text = "В вашем ресторане " + restaurant.title + " был активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code)[:10] + "\nФИО: " + user.first_name + " " + user.last_name + \
            "\nНомер телефона: " + user.phone_number
     requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
     recipient_email = user.email
