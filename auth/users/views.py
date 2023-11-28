@@ -414,7 +414,9 @@ def admin(request):
 
 @api_view(['GET', 'POST'])
 def login_admin(request):
-    print(request.user.is_superuser.__str__() + " " + request.user.username)
+    if request.user.is_authenticated and request.user.is_superuser :
+        return redirect("admin1")
+
     if request.method == 'POST':
         print(request.POST['login'])
         print(request.POST['password'])
