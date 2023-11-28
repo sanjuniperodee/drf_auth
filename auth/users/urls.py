@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+
 urlpatterns = [
     path('checkUser', CheckUserView.as_view()),
     path('register', RegisterView.as_view()),
@@ -15,5 +16,6 @@ urlpatterns = [
     path('redirect_user/<uuid>', redirect_user, name='redirect_user'),
     path('set_name/<uuid>/<first_name>/<last_name>', set_name, name='set_name'),
     path('activate_certificate/<certificate_id>/<restaurant_id>', activate_certificate, name='activate_certificate'),
-    path('admin1', admin, name='admin1')
+    path('admin1', admin, name='admin1'),
+    path('login_admin', login_admin, name='login_admin'),
 ]

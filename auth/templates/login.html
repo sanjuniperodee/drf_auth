@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font-family: Manrope, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div style="background-color:#4263D8; width: 100%; height: max-content; align-content: center; display: flex; flex-direction: column; padding-top: 150px; padding-bottom:  300px; gap: 50px; align-items: center">
+        <img src="{% static 'images/img.png' %}" width="12%">
+        <form method="post" style="background-color: white; width: 20%; align-content: center; display: flex; flex-direction: column; align-items: center; border-radius: 15px; padding: 20px; gap: 20px">
+            {% csrf_token %}
+            <h3>Вход</h3>
+            <input name="login" style="width: 100%; height: 40px; border: #3153CA solid 1px; border-radius: 10px; text-align: center" placeholder="Login">
+            <input name="password" type="password" style="width: 100%; height: 40px; border: #3153CA solid 1px; border-radius: 10px; text-align: center" placeholder="Password">
+            <button type="submit" style="height: 40px; width: 100%; border-radius: 10px; background-color: #3153CA; color: white; font-weight: 700; border-width: 0px">Войти</button>
+        </form>
+    </div>
+</body>
+</html>
