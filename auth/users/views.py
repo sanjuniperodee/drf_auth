@@ -431,9 +431,12 @@ def login_admin(request):
 
 class PortfolieImagesView(APIView):
     def get(self, request, id):
-        portfolio_images = PortfolieImages.objects.get(id=id)
-        serializer = PortfolieImagesSerializer(portfolio_images)
-        return Response(serializer.data)
+        try:
+            portfolio_images = PortfolieImages.objects.get(id=id)
+            serializer = PortfolieImagesSerializer(portfolio_images)
+            return Response(serializer.data)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request, id):
         if len(PortfolieImages.objects.filter(id=id)) > 0:
