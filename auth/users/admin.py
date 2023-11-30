@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Restaurant, RestaurantImage, Tag, Certificate, Favorites, ImageModel, User, Status, PortfolieImages, Portfolio
+from .models import Restaurant, RestaurantImage, Tag, Certificate, Favorites, ImageModel, User, Status, PortfolieImages
 
 
 class PostImageAdmin(admin.StackedInline):
@@ -50,7 +50,6 @@ admin.site.register(Certificate, CertificateAdmin)
     # mark_as_activated.short_description = "Mark selected certificates as Activated"
     # mark_as_non_activated.short_description = "Mark selected certificates as Non-Activated"
 
-admin.site.register(Portfolio)
 admin.site.register(Favorites)
 admin.site.register(Tag)
 admin.site.register(User, UserAdmin)

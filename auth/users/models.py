@@ -101,14 +101,6 @@ class Status(models.Model):
         return self.title
 
 
-class Portfolio(models.Model):
-      title = models.CharField(max_length=255)
-      date = models.CharField(max_length=255)
-      image = models.ImageField()
-
-
 class PortfolieImages(models.Model):
-    post = models.ForeignKey(Portfolio, default=None, on_delete=models.CASCADE)
-    images = models.ImageField()
-    def __str__(self):
-        return self.post.title
+    id = models.CharField(max_length=255, primary_key=True)
+    image = models.ImageField()

@@ -41,13 +41,8 @@ class FavoritesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PortfolioSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Portfolio
-        fields = '__all__'
-
 
 class PortfolieImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PortfolieImages
-        fields = ['images', 'pk', 'post']
+        fields = ['image', 'id']
