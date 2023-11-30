@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Restaurant, RestaurantImage, Tag, Certificate, Favorites, ImageModel, User, Status
+from .models import Restaurant, RestaurantImage, Tag, Certificate, Favorites, ImageModel, User, Status, PortfolieImages, Portfolio
 
 
 class PostImageAdmin(admin.StackedInline):
@@ -50,11 +50,15 @@ admin.site.register(Certificate, CertificateAdmin)
     # mark_as_activated.short_description = "Mark selected certificates as Activated"
     # mark_as_non_activated.short_description = "Mark selected certificates as Non-Activated"
 
-# admin.site.register(Certificate)
+admin.site.register(Portfolio)
 admin.site.register(Favorites)
 admin.site.register(Tag)
 admin.site.register(User, UserAdmin)
 admin.site.register(ImageModel)
 admin.site.register(Status, StatusAdmin)
+
+@admin.register(PortfolieImages)
+class PostImageAdmin(admin.ModelAdmin):
+    pass
 def make_refund_accepted(modeladmin, request, queryset):
     queryset.update(refund_requested=False, refund_granted=True)

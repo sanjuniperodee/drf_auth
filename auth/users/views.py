@@ -23,9 +23,8 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Restaurant, Favorites, Certificate, Tag, RestaurantImage, Status
-from .models import User
-from .serializers import UserSerializer
+from .models import *
+from .serializers import UserSerializer, PortfolioSerializer, PortfolieImagesSerializer
 
 lock = threading.Lock()
 condition = threading.Condition(lock)
@@ -428,3 +427,35 @@ def login_admin(request):
         except:
             print('error')
     return render(request, 'login.html')
+
+
+class PortfolioView(APIView):
+    def post(self, request, id):
+        serializer = PortfolioSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, id):
+        portfolio = Portfolio.objects.get(pk=id)
+        serializer = PortfolioSerializer(portfolio)
+        images = [[image.images.url, image.pk] for image in PortfolieImages.objects.filter(post=portfolio)]
+        return Response({'portfolio' : serializer.data, 'images': images})
+
+
+class PortfolieImagesView(APIView):
+    def get(self, request, id):
+        portfolio_images = PortfolieImages.objects.filter(post__pk=id)
+        serializer = PortfolieImagesSerializer(portfolio_images, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, id):
+        portfolio_instance = Portfolio.objects.get(id=id)
+        request.data['post'] = portfolio_instance.id
+        serializer = PortfolieImagesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
