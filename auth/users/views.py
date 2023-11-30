@@ -436,6 +436,10 @@ class PortfolieImagesView(APIView):
         return Response(serializer.data)
 
     def post(self, request, id):
+        if len(PortfolieImages.objects.filter(id=id)) > 0:
+            image = PortfolieImages.objects.get(id=id)
+            image.image = request.data['image']
+            image.save()
         serializer = PortfolieImagesSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
