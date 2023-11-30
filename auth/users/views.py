@@ -440,6 +440,7 @@ class PortfolieImagesView(APIView):
             image = PortfolieImages.objects.get(id=id)
             image.image = request.data['image']
             image.save()
+            return Response({}, status=status.HTTP_202_ACCEPTED)
         serializer = PortfolieImagesSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
