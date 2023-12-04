@@ -411,6 +411,13 @@ def admin(request):
     return redirect("login_admin")
 
 
+@api_view(['GET'])
+def partners(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return render(request, 'partners.html', {"restaurants": Restaurant.objects.all()})
+    return redirect("login_admin")
+
+
 @api_view(['GET', 'POST'])
 def login_admin(request):
     if request.user.is_authenticated and request.user.is_superuser :

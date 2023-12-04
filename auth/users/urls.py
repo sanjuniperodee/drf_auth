@@ -18,6 +18,7 @@ urlpatterns = [
     path('activate_certificate/<certificate_id>/<restaurant_id>', activate_certificate, name='activate_certificate'),
     path('admin1', admin, name='admin1'),
     path('login_admin', login_admin, name='login_admin'),
-    path('get_portfolio_images/<id>', PortfolieImagesView.as_view())
+    path('get_portfolio_images/<id>', PortfolieImagesView.as_view()),
+    path('partners', partners, name='partners')
 
 ]
