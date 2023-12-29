@@ -14,9 +14,6 @@ class RestaurantForm(ModelForm):
         required=False,
         label='Добавить фотографии',
     )
-    logo = forms.ImageField(
-        required=False,
-    )
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),  # Provide queryset of Tag objects
         widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
@@ -25,7 +22,7 @@ class RestaurantForm(ModelForm):
     )
     class Meta:
         model = Restaurant
-        fields = ['title', 'description', 'location', 'average','tags',
+        fields = ['logo', 'title', 'description', 'location', 'average','tags','image',
                   'kitchen', 'phone_number', 'work_days_1',
                   'work_hours_1', 'work_days_2', 'work_hours_2', 'menu', 'images', 'whatsapp', 'insta', 'slug']
 

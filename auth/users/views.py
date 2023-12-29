@@ -73,7 +73,6 @@ def get_restaurants(request):
 def get_restaurant_by_slug(request, slug):
     try:
         item = Restaurant.objects.get(slug=slug)
-        menus = [{"title": i.title, "image": i.image.url} for i in item.menu.all()]
         images = [image.images.url for image in RestaurantImage.objects.filter(post=item)]
         data = {
             'logo': item.logo.url,
@@ -81,15 +80,19 @@ def get_restaurant_by_slug(request, slug):
             'title': item.title,
             'description': item.description,
             'tags': [tag.title for tag in item.tags.all()],
-            'work_hours': item.work_hours.split(';'),
+            'work_days_1': item.work_days_1,
+            'work_days_2': item.work_days_2,
+            'work_hours_1': item.work_hours_1,
+            'work_hours_2': item.work_hours_2,
             'image': item.image.url,
-            'prices': item.prices.split(','),
+            'prices': [price for price in item.sum_of_credit.all()],
+            'period': [period for period in item.period_of_credit.all()],
             'slug': item.slug,
             'location': item.location,
             'kitchen': item.kitchen,
             'average': item.average,
             'phone': item.phone_number,
-            'menus': menus,
+            # 'menus': item.menu,
             'images': images,
             'insta': item.insta,
             'whatsapp': item.whatsapp
