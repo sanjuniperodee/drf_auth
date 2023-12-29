@@ -230,7 +230,7 @@
                 <th>Лого и название</th>
                 <th>Статус</th>
                 <th>Телефон</th>
-                <th>Адрес</th>
+{#                <th>Адрес</th>#}
                 <th>Обработано заявок</th>
                 <th>Общая сумма</th>
 
@@ -247,7 +247,7 @@
                 </td>
                 <td>{% if restaurant.status %}Активирован{% else %}Неактивен{% endif %}</td>
                 <td>{{ restaurant.phone_number }}</td>
-                <td>{{ restaurant.location }}</td>
+{#                <td>{{ restaurant.location }}</td>#}
                 <td>{{ restaurant.orders.count }}</td>
                 <td>
                     {{ restaurant.sum_of_credit.all|join:", " }}
