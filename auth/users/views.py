@@ -292,7 +292,8 @@ def set_name(request):
         user = User.objects.get(pk=data.get('user_id')),
         restaurant = Restaurant.objects.get(pk=data.get('restaurant_id')),
         period_of_credit = PeriodOfCredit.objects.get(months=int(data.get('period'))),
-        sum_of_credit = SumOfCredit.objects.get(sum=int(data.get('sum')))
+        sum_of_credit = SumOfCredit.objects.get(sum=int(data.get('sum'))),
+        uuid=data.get('uuid')
     )
     status.save()
     return Response(status=200)
