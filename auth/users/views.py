@@ -158,34 +158,21 @@ def get_favourites(request, userId):
     except Favorites.DoesNotExist:
         return Response({'error': 'Favorites not found'}, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
-def create_certificate(request):
-    try:
-        raw_data = request.data
-        certificate = Certificate(
-            sum=raw_data.get('price'),
-            user_id=raw_data.get('user_id'),
-        )
-        certificate.save()
-        return Response({'data': "exit"}, status=status.HTTP_201_CREATED)
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
 @api_view(['GET'])
 def get_certificates_by_id(request, id):
     data = []
-    for certificate in Certificate.objects.filter(user=User.objects.get(pk=id)):
+    for certificate in Certificate.objects.filter(user__pk=id):
         item = {
             'id': certificate.pk,
-            'sum': certificate.sum,
+            'sum': certificate.sum.sum,
             'user_id': certificate.user_id,
             'status': certificate.status,
         }
         if certificate.status:
             item = {
                 'id': certificate.pk,
-                'sum': certificate.sum,
-                'user_id': certificate.user_id,
+                'sum': certificate.sum.sum,
+                'user_id': certificate.user.pk,
                 'status': certificate.status,
                 'encode': certificate.encode,
                 'restaurant': certificate.restaurant.title,
@@ -247,7 +234,8 @@ def handle(request):
         data = json.loads(json_string)
         user = User.objects.get(pk=data.get('reference_id'))
         certificate = Certificate(
-            sum=data.get('approved_params').get('principal'),
+            sum=SumOfCredit.objects.get(sum=int(data.get('approved_params').get('principal'))),
+            period=PeriodOfCredit.objects.get(months=int(data.get('approved_params').get('period'))),
             user=user,
             restaurant=status.restaurant
         )

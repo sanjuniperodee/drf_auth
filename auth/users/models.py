@@ -115,8 +115,8 @@ class Favorites(models.Model):
 
 
 class Certificate(models.Model):
-    sum_of_credit = models.ForeignKey(SumOfCredit, on_delete=models.CASCADE, verbose_name='Сумма кредита', null=True, blank=True)
-    period_of_credit = models.ForeignKey(PeriodOfCredit, on_delete=models.CASCADE, verbose_name='Срок кредита', null=True, blank=True)
+    sum = models.ForeignKey(SumOfCredit, on_delete=models.CASCADE, verbose_name='Сумма кредита', null=True, blank=True)
+    period = models.ForeignKey(PeriodOfCredit, on_delete=models.CASCADE, verbose_name='Срок кредита', null=True, blank=True)
     user = models.ForeignKey(User, default=None, on_delete=models.CASCADE, verbose_name='Пользователь')
     encode = models.CharField(max_length=255, null=True, blank=True, verbose_name='Код сертификата')
     status = models.BooleanField(default=False, blank=True, verbose_name='Акитивирован')
