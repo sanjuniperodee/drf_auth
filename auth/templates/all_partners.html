@@ -245,7 +245,7 @@
                     <br>
                     {{ restaurant.title }}
                 </td>
-                <td><p>{{ restaurant.location }}</p></td>
+                <td style="width: max-content"><p style="width: max-content">{{ restaurant.location }}</p></td>
                 <td>{{ restaurant.phone_number }}</td>
                 <td>{% if restaurant.status %}Активирован{% else %}Неактивен{% endif %}</td>
                 <td>{{ restaurant.orders.count }}</td>
