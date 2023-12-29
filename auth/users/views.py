@@ -207,39 +207,39 @@ def handle(request):
             status.status = "Одобрено"
         else:
             status.status = "Отказано"
-    status.save()
-    # message = MIMEMultipart()
-    # context = "Статус: " + status.title
-    # if data.get("first_name"):
-    #     context += "\nНа имя: " + data.get('first_name') + " " + data.get('last_name')
-    # else:
-    #     context += "\nНа имя : " + name[data.get('uuid')] + " " + surname[data.get('uuid')]
-    # if data.get('alternative_reason'):
-    #     context += "\nПричина отказа: " + data.get('alternative_reason')
-    # context += "\nНаминал: " + str(data.get('approved_params').get('principal'))
-    # context += "\nСрок: " + str(data.get('approved_params').get('period'))
-    #
-    # message.attach(MIMEText(context))
-    # message["From"] = "support@reddel.kz"
-    # message["To"] = "admin@reddel.kz"
-    # message["Subject"] = "Новая заявка"
-    #
-    # smtp_server = "smtp.gmail.com"
-    # smtp_port = 587
-    # smtp_username = "noreply.reddel@gmail.com"
-    # smtp_password = "hfft yumf trrp vczw"
-    #
-    # server = smtplib.SMTP(smtp_server, smtp_port)
-    # server.starttls()
-    # server.login(smtp_username, smtp_password)
-    # server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
-    # server.quit()
+    message = MIMEMultipart()
+    context = "Статус: " + status.title
+    if data.get("first_name"):
+        context += "\nНа имя: " + data.get('first_name') + " " + data.get('last_name')
+    else:
+        context += "\nНа имя : " + name[data.get('uuid')] + " " + surname[data.get('uuid')]
+    if data.get('alternative_reason'):
+        context += "\nПричина отказа: " + data.get('alternative_reason')
+    context += "\nНаминал: " + str(data.get('approved_params').get('principal'))
+    context += "\nСрок: " + str(data.get('approved_params').get('period'))
+
+    message.attach(MIMEText(context))
+    message["From"] = "support@reddel.kz"
+    message["To"] = "admin@reddel.kz"
+    message["Subject"] = "Новая заявка"
+
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+    smtp_username = "noreply.reddel@gmail.com"
+    smtp_password = "hfft yumf trrp vczw"
+
+    server = smtplib.SMTP(smtp_server, smtp_port)
+    server.starttls()
+    server.login(smtp_username, smtp_password)
+    server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
+    server.quit()
     print(data)
     if data.get('result') == 'REJECTED':
         raw_data = request.body
         json_string = raw_data.decode('utf-8')
         data = json.loads(json_string)
         status.redirect_url = data.get('alternative_reason')
+        status.reject_reason = data.get('alternative_reason')
         print(data.get('alternative_reason'))
     elif data.get('status') == 'ISSUED':
         raw_data = request.body
@@ -248,24 +248,25 @@ def handle(request):
         user = User.objects.get(pk=data.get('reference_id'))
         certificate = Certificate(
             sum=data.get('approved_params').get('principal'),
-            user=user
+            user=user,
+            restaurant=status.restaurant
         )
         certificate.save()
-        # with open("auth//template.html", "r") as f:
-        #     email_template = f.read()
-        # email_template = email_template.replace("Акжонов Досжан Дарахнович", user.first_name)
-        # email_template = email_template.replace("30000 ₸", str(certificate.sum))
-        # email_template = email_template.replace("408948", "Не активирован")
-        # message = MIMEMultipart()
-        # message["From"] = smtp_username
-        # message["To"] = user.email
-        # message["Subject"] = "Поздравляем! У вас новый сертификат"
-        # message.attach(MIMEText(email_template, "html"))
-        # with smtplib.SMTP("smtp.gmail.com", 587) as server:
-        #     server.starttls()
-        #     server.login(smtp_username, smtp_password)
-        #     server.sendmail(smtp_username, user.email, message.as_string())
-        #     server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
+        with open("auth//template.html", "r") as f:
+            email_template = f.read()
+        email_template = email_template.replace("Акжонов Досжан Дарахнович", user.first_name)
+        email_template = email_template.replace("30000 ₸", str(certificate.sum))
+        email_template = email_template.replace("408948", "Не активирован")
+        message = MIMEMultipart()
+        message["From"] = smtp_username
+        message["To"] = user.email
+        message["Subject"] = "Поздравляем! У вас новый сертификат"
+        message.attach(MIMEText(email_template, "html"))
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(smtp_username, smtp_password)
+            server.sendmail(smtp_username, user.email, message.as_string())
+            server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
     else:
         status.redirect_url = data.get('redirect_url')
     status.save()
