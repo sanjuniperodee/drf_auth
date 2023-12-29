@@ -239,7 +239,7 @@ def handle(request):
         raw_data = request.body
         json_string = raw_data.decode('utf-8')
         data = json.loads(json_string)
-        redirect_url[data.get('uuid')] = data.get('alternative_reason')
+        status.redirect_url = data.get('alternative_reason')
         print(data.get('alternative_reason'))
     elif data.get('status') == 'ISSUED':
         raw_data = request.body
@@ -267,7 +267,7 @@ def handle(request):
         #     server.sendmail(smtp_username, user.email, message.as_string())
         #     server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
     else:
-        redirect_url[data.get('uuid')] = data.get('redirect_url')
+        status.redirect_url = data.get('redirect_url')
 
     return Response({'message': 'OK'}, status=200)
 
