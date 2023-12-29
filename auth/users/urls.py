@@ -16,9 +16,17 @@ urlpatterns = [
     path('redirect_user/<uuid>', redirect_user, name='redirect_user'),
     path('set_name/<uuid>/<first_name>/<last_name>', set_name, name='set_name'),
     path('activate_certificate/<certificate_id>/<restaurant_id>', activate_certificate, name='activate_certificate'),
-    path('admin1', admin, name='admin1'),
-    path('login_admin', login_admin, name='login_admin'),
-    path('get_portfolio_images/<id>', PortfolieImagesView.as_view()),
-    path('partners', partners, name='partners')
+    path('', MyLoginView.as_view(), name='login'),
+    path('auth/logout/', MyLogoutView.as_view(), name='logout'),
+    path('restaurant/create', RestaurantCreateView.as_view(), name='restaurant_create'),
+    path('image/create/', ImageCreateView.as_view(), name='image_create'),
+    path('restaurant/all', RestaurantListView.as_view(), name='restaurant_list'),
+    path('restaurant/<int:pk>/delete', RestaurantDeleteView.as_view(), name='restaurant_delete'),
+    path('restaurant/<int:pk>/edit', RestaurantEditView.as_view(), name='restaurant_edit'),
+    path('order/<str:status>', OrderListView.as_view(), name='order_list'),
+    path('order/<int:pk>/delete', deleteOrder, name='order_delete'),
+    path('delete_image/<int:image_id>', delete_image, name='delete_image'),
+    path('upload-images/<int:id>', upload_images_view, name='upload_images'),
+    path('upload-logo/<int:id>', upload_logo_view, name='upload_images'),
 
 ]

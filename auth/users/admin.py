@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Restaurant, RestaurantImage, Tag, Certificate, Favorites, ImageModel, User, Status, PortfolieImages
+from .models import *
 
 
 class PostImageAdmin(admin.StackedInline):
@@ -16,14 +16,14 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class StatusAdmin(admin.ModelAdmin):
-    list_filter = ('title',)
+    list_filter = ('status',)
     # list_display = ('id', 'user', 'restaurant', 'status',)
 
 
 @admin.register(Restaurant)
 class PostAdmin(admin.ModelAdmin):
     inlines = [PostImageAdmin]
-    list_display = ('title', 'id', 'phone_number', 'prices', 'description',)
+    list_display = ('title', 'id', 'phone_number', 'description',)
 
     class Meta:
         model = Restaurant
@@ -55,6 +55,9 @@ admin.site.register(Tag)
 admin.site.register(User, UserAdmin)
 admin.site.register(ImageModel)
 admin.site.register(Status, StatusAdmin)
+
+admin.site.register(SumOfCredit)
+admin.site.register(PeriodOfCredit)
 
 @admin.register(PortfolieImages)
 class PostImageAdmin(admin.ModelAdmin):

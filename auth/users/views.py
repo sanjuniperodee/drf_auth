@@ -7,6 +7,9 @@ import requests
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView, LogoutView
+from rest_framework.renderers import TemplateHTMLRenderer
+from django.http import JsonResponse
 
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -25,6 +28,18 @@ from rest_framework.views import APIView
 
 from .models import *
 from .serializers import UserSerializer, PortfolieImagesSerializer
+from .forms import *
+from django.db.models import Count, Sum, Q
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from django.contrib.auth.views import LoginView, LogoutView
+from .forms import MyAuthenticationForm, RestaurantForm, RestaurantImageForm
 
 lock = threading.Lock()
 condition = threading.Condition(lock)
@@ -404,36 +419,36 @@ class UserView(APIView):
         return Response(serializer.data)
 
 
-@api_view(['GET'])
-def admin(request):
-    if request.user.is_authenticated and request.user.is_superuser:
-        return render(request, 'admin.html')
-    return redirect("login_admin")
-
-
-@api_view(['GET'])
-def partners(request):
-    if request.user.is_authenticated and request.user.is_superuser:
-        return render(request, 'partners.html', {"restaurants": Restaurant.objects.all()})
-    return redirect("login_admin")
-
-
-@api_view(['GET', 'POST'])
-def login_admin(request):
-    if request.user.is_authenticated and request.user.is_superuser :
-        return redirect("admin1")
-
-    if request.method == 'POST':
-        print(request.POST['login'])
-        print(request.POST['password'])
-        try:
-            user = authenticate(username=request.POST['login'], password=request.POST['password'])
-            login(request, user)
-            print("authorized")
-            return redirect("admin1")
-        except:
-            print('error')
-    return render(request, 'login.html')
+# @api_view(['GET'])
+# def admin(request):
+#     if request.user.is_authenticated and request.user.is_superuser:
+#         return render(request, 'admin.html')
+#     return redirect("login_admin")
+#
+#
+# @api_view(['GET'])
+# def partners(request):
+#     if request.user.is_authenticated and request.user.is_superuser:
+#         return render(request, 'partners.html', {"restaurants": Restaurant.objects.all()})
+#     return redirect("login_admin")
+#
+#
+# @api_view(['GET', 'POST'])
+# def login_admin(request):
+#     if request.user.is_authenticated and request.user.is_superuser :
+#         return redirect("admin1")
+#
+#     if request.method == 'POST':
+#         print(request.POST['login'])
+#         print(request.POST['password'])
+#         try:
+#             user = authenticate(username=request.POST['login'], password=request.POST['password'])
+#             login(request, user)
+#             print("authorized")
+#             return redirect("admin1")
+#         except:
+#             print('error')
+#     return render(request, 'login.html')
 
 
 class PortfolieImagesView(APIView):
@@ -465,3 +480,191 @@ class PortfolieImagesView(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
+
+
+class MyLoginView(LoginView):
+    template_name = 'login.html'
+    form_class = MyAuthenticationForm
+
+
+
+class MyLogoutView(LogoutView):
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        super().get(request, *args, **kwargs)
+        return redirect('login')
+
+class RestaurantCreateView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'add_partner.html'
+
+    def get(self, request):
+        form = RestaurantForm()
+        images = RestaurantImage.objects.filter(post__isnull=True)
+        return Response({'form': form, 'image_form': RestaurantImageForm(), 'images': images})
+
+    def post(self, request):
+        print(2131231)
+        form = RestaurantForm(request.POST, request.FILES)
+        if form.is_valid():
+            restaurant = form.save()
+            return Response({'success': True, 'restaurant_id': restaurant.id})
+
+
+class ImageCreateView(APIView):
+    def post(self, request):
+        form = RestaurantImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.save()
+            if image:
+                return redirect('restaurant_create')
+
+def delete_image(request, image_id):
+    image = RestaurantImage.objects.get(id=image_id)
+    image.delete()
+    return Response({'success': True})
+
+
+def upload_images_view(request, id):
+    if request.method == 'POST' and request.FILES.getlist('images'):
+        uploaded_images = request.FILES.getlist('images')
+
+        # try:
+        for image in uploaded_images:
+            RestaurantImage.objects.create(images=image, post=Restaurant.objects.get(pk=id))  # Assuming your Image model has an 'image_file' field
+        return JsonResponse({'message': 'Images uploaded successfully'}, status=201)
+        # except Exception as e:
+        #     return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'No images received'}, status=400)
+def upload_logo_view(request, id):
+    if request.method == 'POST' and request.FILES.getlist('images'):
+        uploaded_images = request.FILES.getlist('images')
+
+        # try:
+        for image in uploaded_images:
+            restauran = Restaurant.objects.get(pk=id)
+            restauran.logo = image
+            restauran.save()
+        return JsonResponse({'message': 'Images uploaded successfully'}, status=201)
+        # except Exception as e:
+        #     return JsonResponse({'error': str(e)}, status=500)
+
+    return JsonResponse({'error': 'No images received'}, status=400)
+
+class RestaurantListView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'all_partners.html'
+
+    def get(self, request):
+        queryset = Restaurant.objects.all()
+        total_restaurants = queryset.count()
+        # Обработка поиска
+        search_query = request.GET.get('search_query')
+        if search_query:
+            queryset = queryset.filter(
+                Q(title__icontains=search_query) |
+                Q(description__icontains=search_query) |
+                Q(food_type__icontains=search_query) |
+                Q(phone_number__icontains=search_query) |
+                Q(location__icontains=search_query)
+            )
+
+        # Обработка сортировки
+        sort_by_orders = request.GET.get('sort_orders')
+        sort_by_amount = request.GET.get('sort_amount')
+
+        if sort_by_orders:
+            queryset = queryset.annotate(num_orders=Count('orders')).order_by(
+                'num_orders' if sort_by_orders == 'asc' else '-num_orders')
+        elif sort_by_amount:
+            queryset = queryset.annotate(total_amount=Sum('orders__sum_of_credit__sum')).order_by(
+                'total_amount' if sort_by_amount == 'asc' else '-total_amount')
+
+        return Response({'restaurants': queryset, 'total_restaurants': total_restaurants})
+
+
+class RestaurantEditView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'edit_partner.html'
+
+    def get(self, request, pk):
+        restaurant = get_object_or_404(Restaurant, pk=pk)
+        images = RestaurantImage.objects.filter(post=restaurant)
+        form = RestaurantForm(instance=restaurant)
+        tags = Tag.objects.all()
+        return Response({'restaurant': restaurant, 'images': images, 'form': form, 'tags': tags})
+
+    def post(self, request, pk):
+        restaurant = get_object_or_404(Restaurant, pk=pk)
+        images = RestaurantImage.objects.filter(post=restaurant)
+        print('1')
+
+        form = RestaurantForm(request.POST, request.FILES, instance=restaurant)
+        if form.is_valid():
+            restaurant = form.save()
+            return redirect('restaurant_edit', pk=restaurant.pk)
+        else:
+            print('3')
+            tags = Tag.objects.all()
+
+            return render(request, self.template_name, {'form': form, 'success': False, 'restaurant': restaurant, 'images': images,
+                                                        'tags': tags})
+
+
+class RestaurantDeleteView(DeleteView):
+    model = Restaurant
+    success_url = reverse_lazy('restaurant_list')  # Укажите ваш путь, куда перенаправлять после удаления
+    template_name = 'all_partners.html'  # Создайте этот шаблон в соответствии с вашими нуждами
+
+    def delete(self, request, *args, **kwargs):
+        # Ваш код обработки удаления
+        return super().delete(request, *args, **kwargs)
+
+
+class OrderListView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'all_orders.html'
+
+    def get(self, request, status):
+        if status == '1':
+            queryset = Status.objects.filter(status='Новые')
+            status = 'Новые'
+        elif status == '2':
+            queryset = Status.objects.filter(status='Активированные')
+            status = 'Активированные'
+        else:
+            queryset = Status.objects.filter(status='Отказы')
+            status = 'Отказы'
+        total_orders = queryset.count()
+        if total_orders > 0:
+            # найти средний чек всех ордеров
+            average = Status.objects.aggregate(average=Sum('sum_of_credit__sum') / total_orders)['average']
+        else:
+            average = 0
+        search_query = request.GET.get('search_query')
+        if search_query:
+            queryset = queryset.filter(
+                Q(user__username__icontains=search_query) |
+                Q(restaurant__title__icontains=search_query) |
+                Q(sum_of_credit__sum__icontains=search_query) |
+                Q(period_of_credit__months__icontains=search_query) |
+                Q(status__icontains=search_query)
+            )
+
+        # Обработка сортировки
+        sort_by_orders = request.GET.get('sort_sum')
+
+        if sort_by_orders:
+            queryset = queryset.annotate(total_amount=Sum('sum_of_credit__sum')).order_by(
+                'total_amount' if sort_by_orders == 'asc' else '-total_amount')
+
+
+        return Response({'orders': queryset, 'total_orders': total_orders, 'average': average, 'status': status})
+
+
+def deleteOrder(request, pk):
+    order = Status.objects.get(pk=pk)
+    order.delete()
+    return JsonResponse({'message': 'ok'})
