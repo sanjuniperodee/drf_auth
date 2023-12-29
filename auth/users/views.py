@@ -268,7 +268,7 @@ def handle(request):
         #     server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
     else:
         status.redirect_url = data.get('redirect_url')
-
+    status.save()
     return Response({'message': 'OK'}, status=200)
 
 @api_view(['GET'])
@@ -279,7 +279,7 @@ def redirect_user(request, uuid):
         if len(status) == 0:
             return Response(status=500)
         print("RETURNED ANSWER")
-        return Response({'url': status.redirect_url})
+        return Response({'url': status[0].redirect_url})
     except:
         return Response({},status=500)
 
