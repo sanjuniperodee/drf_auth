@@ -120,17 +120,16 @@
             </button>
             <div id="dropdown" class="hidden font-bold text-text text-base py-2 px-4 rounded-md">
                 <div class="flex flex-col items-start ml-3 gap-2">
-                    <a href="{% url 'order_list' '1' %}">
-                    <button class="py-2 px-2 hover:bg-slate-300 hover:bg-opacity-70 rounded-md">Новые
-                        (1)
+                    <a href="{% url 'order_list' 'Одобрено' %}">
+                    <button class="py-2 px-2 hover:bg-slate-300 hover:bg-opacity-70 rounded-md">Одобрено (1)
                     </button>
                     </a>
-                    <a href="{% url 'order_list' '2' %}">
+                    <a href="{% url 'order_list' 'Выдано' %}">
                     <button
-                            class="py-2 px-2 hover:bg-slate-300 hover:bg-opacity-70 rounded-md">Активированные
+                            class="py-2 px-2 hover:bg-slate-300 hover:bg-opacity-70 rounded-md">Выдано
                     </button>
                     </a>
-                    <a href="{% url 'order_list' '3' %}">
+                    <a href="{% url 'order_list' 'Отказы' %}">
                     <button class="py-2 px-2 hover:bg-slate-300 hover:bg-opacity-70 rounded-md">Отказы</button>
                     </a>
                 </div>

@@ -635,15 +635,7 @@ class OrderListView(APIView):
     template_name = 'all_orders.html'
 
     def get(self, request, status):
-        if status == '1':
-            queryset = Status.objects.filter(status='Новые')
-            status = 'Новые'
-        elif status == '2':
-            queryset = Status.objects.filter(status='Активированные')
-            status = 'Активированные'
-        else:
-            queryset = Status.objects.filter(status='Отказы')
-            status = 'Отказы'
+        queryset = Status.objects.filter(status=status)
         total_orders = queryset.count()
         if total_orders > 0:
             # найти средний чек всех ордеров
