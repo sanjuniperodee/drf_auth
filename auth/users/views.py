@@ -264,11 +264,11 @@ def handle(request):
 def redirect_user(request, uuid):
     global redirect_url
     try:
-        status = Status.objects.filter(uuid=uuid)
-        if len(status) == 0:
+        status = Status.objects.get(uuid=uuid)
+        if status.redirect_url is None:
             return Response(status=500)
         print("RETURNED ANSWER")
-        return Response({'url': status[0].redirect_url})
+        return Response({'url': status.redirect_url})
     except:
         return Response({},status=500)
 
