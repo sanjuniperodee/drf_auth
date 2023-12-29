@@ -228,9 +228,9 @@
             <thead>
             <tr>
                 <th>Лого и название</th>
-                <th>Статус</th>
+                <th><p>Location</p></th>
                 <th>Телефон</th>
-                <th>Location</th>
+                <th>Статус</th>
                 <th>Обработано заявок</th>
                 <th>Общая сумма</th>
 
@@ -245,9 +245,9 @@
                     <br>
                     {{ restaurant.title }}
                 </td>
-                <td>{% if restaurant.status %}Активирован{% else %}Неактивен{% endif %}</td>
-                <td>{{ restaurant.phone_number }}</td>
                 <td>{{ restaurant.location }}</td>
+                <td>{{ restaurant.phone_number }}</td>
+                <td>{% if restaurant.status %}Активирован{% else %}Неактивен{% endif %}</td>
                 <td>{{ restaurant.orders.count }}</td>
                 <td>
                     {{ restaurant.sum_of_credit.all|join:", " }}
