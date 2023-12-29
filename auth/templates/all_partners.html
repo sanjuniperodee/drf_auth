@@ -228,7 +228,7 @@
             <thead>
             <tr>
                 <th>Лого и название</th>
-                <th><p>Location</p></th>
+                <th><p>Локация</p></th>
                 <th>Телефон</th>
                 <th>Статус</th>
                 <th>Обработано заявок</th>
@@ -245,7 +245,7 @@
                     <br>
                     {{ restaurant.title }}
                 </td>
-                <td>{{ restaurant.title }}</td>
+                <td><p>{{ restaurant.location }}</p></td>
                 <td>{{ restaurant.phone_number }}</td>
                 <td>{% if restaurant.status %}Активирован{% else %}Неактивен{% endif %}</td>
                 <td>{{ restaurant.orders.count }}</td>
