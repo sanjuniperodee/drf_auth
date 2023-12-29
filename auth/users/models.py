@@ -77,10 +77,10 @@ class Restaurant(models.Model):
     whatsapp = models.CharField(max_length=255, null=True, verbose_name='Whatsapp')
     sum_of_credit = models.ManyToManyField(SumOfCredit, default=None, verbose_name='Сумма кредита')
 
-    work_days_1 = models.CharField(max_length=255, null=True, verbose_name='Дни работы 1')
-    work_hours_1 = models.CharField(max_length=255, null=True, verbose_name='Часы работы 1')
-    work_days_2 = models.CharField(max_length=255, null=True, verbose_name='Дни работы 2')
-    work_hours_2 = models.CharField(max_length=255, null=True, verbose_name='Часы работы 2')
+    work_days_1 = models.CharField(max_length=255, null=True, blank=True, verbose_name='Дни работы 1')
+    work_hours_1 = models.CharField(max_length=255, null=True, blank=True, verbose_name='Часы работы 1')
+    work_days_2 = models.CharField(max_length=255, null=True, blank=True, verbose_name='Дни работы 2')
+    work_hours_2 = models.CharField(max_length=255, null=True, blank=True, verbose_name='Часы работы 2')
 
     status = models.BooleanField(default=False, verbose_name='Активиция')
 
