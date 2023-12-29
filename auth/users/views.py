@@ -637,11 +637,12 @@ class OrderListView(APIView):
     def get(self, request, status):
         queryset = Status.objects.filter(status=status)
         total_orders = queryset.count()
+        average = 0
         if total_orders > 0:
             # найти средний чек всех ордеров
-            average = Status.objects.aggregate(average=Sum('sum_of_credit__sum') / total_orders)['average']
-        else:
-            average = 0
+            for i in queryset:
+                average+=i.sum_of_credit.sum
+            average /= total_orders
         search_query = request.GET.get('search_query')
         if search_query:
             queryset = queryset.filter(
