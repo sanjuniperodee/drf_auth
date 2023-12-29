@@ -74,9 +74,8 @@ td {
   color: #7d7d7d;
   padding: 1.5rem;
   text-align: start;
-  /*white-space: nowrap; !* Запрет переноса слов *!*/
+  white-space: nowrap; /* Запрет переноса слов */
   min-width: 100px;
-  max-width: 200px;
   margin: 0 1rem;
 }
 
