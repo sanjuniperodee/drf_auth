@@ -135,7 +135,7 @@ class Status(models.Model):
     sum_of_credit = models.ForeignKey(SumOfCredit, on_delete=models.CASCADE, verbose_name='Сумма кредита', null=True, blank=True)
     date = models.DateTimeField(auto_now_add=True, verbose_name='Дата', null=True, blank=True)
     period_of_credit = models.ForeignKey(PeriodOfCredit, on_delete=models.CASCADE, verbose_name='Срок кредита', null=True, blank=True)
-    status = models.CharField(choices=(('Новые', 'Новые'), ('Активированные', 'Активированные'), ('Отказы', 'Отказы')), default='Новые', max_length=255,
+    status = models.CharField(default='Новые', max_length=255,
                               verbose_name='Статус')
     reject_reason = models.CharField(max_length=255, blank=True, null=True, verbose_name='Причина отказа')
     uuid = models.CharField(max_length=255, blank=True, null=True)
