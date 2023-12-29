@@ -95,8 +95,10 @@ class Restaurant(models.Model):
         return str(self.title)
 
     def total_order_sum(self):
-        total_sum = self.orders.aggregate(total_sum=Sum('sum_of_credit__sum'))['total_sum']
-        return total_sum if total_sum is not None else 0
+        total_sum = 0
+        for item in Status.objects.filter(restaurant=self):
+            total_sum += item.sum_of_credit.sum
+        return total_sum
 
 
 
@@ -135,7 +137,9 @@ class Status(models.Model):
     period_of_credit = models.ForeignKey(PeriodOfCredit, on_delete=models.CASCADE, verbose_name='Срок кредита', null=True, blank=True)
     status = models.CharField(choices=(('Новые', 'Новые'), ('Активированные', 'Активированные'), ('Отказы', 'Отказы')), default='Новые', max_length=255,
                               verbose_name='Статус')
-
+    reject_reason = models.CharField(max_length=255, blank=True, null=True, verbose_name='Причина отказа')
+    uuid = models.CharField(max_length=255, blank=True, null=True)
+    redirect_url = models.CharField(max_length=255, blank=True, null=True, verbose_name='Ссылка на скоринг')
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'

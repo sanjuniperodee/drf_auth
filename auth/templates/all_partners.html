@@ -250,7 +250,7 @@
                 <td>{% if restaurant.status %}Активирован{% else %}Неактивен{% endif %}</td>
                 <td>{{ restaurant.orders.count }}</td>
                 <td>
-{#                    {{ restaurant.sum_of_credit.all|join:", " }}#}
+                    {{ restaurant.total_order_sum }}
                 </td>
                 <td>
                      <div class="relative inline-block text-left" onclick="toggleDropdown('{{ restaurant.id }}')">
