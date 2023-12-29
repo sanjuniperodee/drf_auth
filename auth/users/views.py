@@ -208,7 +208,7 @@ def handle(request):
         else:
             status.status = "Отказано"
     message = MIMEMultipart()
-    context = "Статус: " + status.title
+    context = "Статус: " + status.status
     if data.get("first_name"):
         context += "\nНа имя: " + data.get('first_name') + " " + data.get('last_name')
     else:
