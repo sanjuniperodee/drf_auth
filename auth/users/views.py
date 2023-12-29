@@ -199,6 +199,7 @@ def get_certificates_by_id(request, id):
 @api_view(['POST'])
 def handle(request):
     data = json.loads(request.body)
+    print(data)
     status = Status.objects.get(uuid=data.get('uuid'))
     status.stats = 'Выдано'
     if data.get('result'):
