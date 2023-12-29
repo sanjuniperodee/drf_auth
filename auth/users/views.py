@@ -317,28 +317,28 @@ def activate_certificate(request, certificate_id, restaurant_id):
     certificate.end_date = end_date
     certificate.restaurant = restaurant  # Set the restaurant
     certificate.save()
-    # text = "В вашем ресторане " + restaurant.title + " был активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code)[:10] + "\nФИО: " + user.first_name + " " + user.last_name + \
-    #        "\nНомер телефона: " + user.phone_number
-    # requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
-    # recipient_email = user.email
-    # with open("auth//template.html", "r") as f:
-    #     email_template = f.read()
-    # smtp_username = "noreply.reddel@gmail.com"
-    # smtp_password = "hfft yumf trrp vczw"
-    # email_template = email_template.replace("Акжонов Досжан Дарахнович" , user.first_name)
-    # email_template = email_template.replace("30000 ₸", str(certificate.sum))
-    # email_template = email_template.replace("408948", str(code)[:10])
-    #
-    # message = MIMEMultipart()
-    # message["From"] = smtp_username
-    # message["To"] = recipient_email
-    # message["Subject"] = "Поздравляем! Вы активировали сертификат"
-    # message.attach(MIMEText(email_template, "html"))
-    # with smtplib.SMTP("smtp.gmail.com", 587) as server:
-    #     server.starttls()
-    #     server.login(smtp_username, smtp_password)
-    #     server.sendmail(smtp_username, recipient_email, message.as_string())
-    #     server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
+    text = "В вашем ресторане " + restaurant.title + " был активирован сертификат на сумму " + str(certificate.sum) + "\nКод активации сертификата: " + str(code)[:10] + "\nФИО: " + user.first_name + " " + user.last_name + \
+           "\nНомер телефона: " + user.phone_number
+    requests.get("https://api.mobizon.kz/service/message/sendsmsmessage?recipient=" + restaurant.phone_number.replace('(', '').replace(')', '').replace(' ', '').replace('_', '') + "&text=" + text + "&apiKey=kz0502f56621750a9ca3ac636e8301e235c2b647839531f2994222514c786fb6ff2178")
+    recipient_email = user.email
+    with open("auth//template.html", "r") as f:
+        email_template = f.read()
+    smtp_username = "noreply.reddel@gmail.com"
+    smtp_password = "hfft yumf trrp vczw"
+    email_template = email_template.replace("Акжонов Досжан Дарахнович" , user.first_name)
+    email_template = email_template.replace("30000 ₸", str(certificate.sum))
+    email_template = email_template.replace("408948", str(code)[:10])
+
+    message = MIMEMultipart()
+    message["From"] = smtp_username
+    message["To"] = recipient_email
+    message["Subject"] = "Поздравляем! Вы активировали сертификат"
+    message.attach(MIMEText(email_template, "html"))
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(smtp_username, recipient_email, message.as_string())
+        server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
 
 
     return Response({'message': 'Certificate activated successfully.'}, status=200)
