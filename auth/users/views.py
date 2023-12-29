@@ -212,7 +212,7 @@ def handle(request):
     if data.get("first_name"):
         context += "\nНа имя: " + data.get('first_name') + " " + data.get('last_name')
     else:
-        context += "\nНа имя : " + name[data.get('uuid')] + " " + surname[data.get('uuid')]
+        context += "\nНа имя : " + status.user.first_name + " " + status.user.last_name
     if data.get('alternative_reason'):
         context += "\nПричина отказа: " + data.get('alternative_reason')
     context += "\nНаминал: " + str(data.get('approved_params').get('principal'))
