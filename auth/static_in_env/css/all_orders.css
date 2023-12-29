@@ -73,7 +73,7 @@ td {
   font-weight: 400;
   color: #7d7d7d;
   padding: 2rem;
-  text-align: center;
+  text-align: start;
   white-space: nowrap; /* Запрет переноса слов */
   min-width: 100px;
   margin: 0 1rem;

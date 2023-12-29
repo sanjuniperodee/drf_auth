@@ -227,7 +227,6 @@
             <!--Headers-->
             <thead>
             <tr>
-                <th></th>
                 <th>Лого и название</th>
                 <th>Статус</th>
                 <th>Телефон</th>
@@ -241,12 +240,6 @@
             <tbody>
             {% for restaurant in restaurants %}
             <tr>
-                <td>
-                    <label class="container">
-                        <input type="checkbox" checked="checked">
-                        <span class="checkmark"></span>
-                    </label>
-                </td>
                 <td class="items-center text-text3 text-[0.93rem] font-medium">
                     <img {% if restaurant.logo %} src="{{ restaurant.logo.url }}" {% endif %} alt="LOGO" width="100px">
                     <br>
