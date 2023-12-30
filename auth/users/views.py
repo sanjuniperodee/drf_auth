@@ -10,6 +10,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.http import JsonResponse
+from rest_framework import permissions
 
 from django.shortcuts import render, get_object_or_404, redirect
 
@@ -43,6 +44,10 @@ from .forms import MyAuthenticationForm, RestaurantForm, RestaurantImageForm
 
 lock = threading.Lock()
 condition = threading.Condition(lock)
+
+class IsAdminUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user and request.user.is_staff
 @api_view(['GET'])
 def get_restaurants(request):
     data = []
@@ -479,8 +484,20 @@ class PortfolieImagesView(APIView):
 
 class MyLoginView(LoginView):
     template_name = 'login.html'
-    form_class = MyAuthenticationForm
-
+    form_class = AuthenticationForm
+    permission_classes = (permissions.AllowAny,)
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_staff:
+            return redirect('restaurant_list')
+        form = AuthenticationForm()
+        return render(request, 'login.html', {'form': form})
+    def post(self, request, *args, **kwargs):
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('restaurant_list')  # Replace 'restaurant_list' with your desired URL name
+        return render(request, 'login.html', {'form': form})
 
 
 class MyLogoutView(LogoutView):
@@ -493,6 +510,7 @@ class MyLogoutView(LogoutView):
 class RestaurantCreateView(APIView):
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'add_partner.html'
+    permission_classes = [IsAdminUser]
 
     def get(self, request):
         form = RestaurantForm()
@@ -506,14 +524,6 @@ class RestaurantCreateView(APIView):
             restaurant = form.save()
             return Response({'success': True, 'restaurant_id': restaurant.id})
 
-
-class ImageCreateView(APIView):
-    def post(self, request):
-        form = RestaurantImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = form.save()
-            if image:
-                return redirect('restaurant_create')
 
 def delete_image(request, image_id):
     image = RestaurantImage.objects.get(id=image_id)
@@ -549,6 +559,7 @@ def upload_logo_view(request, id):
     return JsonResponse({'error': 'No images received'}, status=400)
 
 class RestaurantListView(APIView):
+    permission_classes = [IsAdminUser]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'all_partners.html'
 
@@ -581,6 +592,7 @@ class RestaurantListView(APIView):
 
 
 class RestaurantEditView(APIView):
+    permission_classes = [IsAdminUser]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'edit_partner.html'
 
@@ -609,6 +621,7 @@ class RestaurantEditView(APIView):
 
 
 class RestaurantDeleteView(DeleteView):
+    permission_classes = [IsAdminUser]
     model = Restaurant
     success_url = reverse_lazy('restaurant_list')  # Укажите ваш путь, куда перенаправлять после удаления
     template_name = 'all_partners.html'  # Создайте этот шаблон в соответствии с вашими нуждами
@@ -619,6 +632,7 @@ class RestaurantDeleteView(DeleteView):
 
 
 class OrderListView(APIView):
+    permission_classes = [IsAdminUser]
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'all_orders.html'
 
