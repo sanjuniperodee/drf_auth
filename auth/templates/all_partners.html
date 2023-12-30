@@ -227,8 +227,8 @@
             <thead>
             <tr>
                 <th>Лого и название</th>
-                <th><p>Локация</p></th>
-                <th>Телефон</th>
+                <th>Локация</th>
+                <th>Номер телефона</th>
                 <th>Статус</th>
                 <th>Обработано заявок</th>
                 <th>Общая сумма</th>
@@ -239,12 +239,12 @@
             <tbody>
             {% for restaurant in restaurants %}
             <tr>
-                <td class="items-center text-text3 text-[0.93rem] font-medium">
-                    <img {% if restaurant.logo %} src="{{ restaurant.logo.url }}" {% endif %} alt="LOGO" width="100px">
+                <td class="items-center text-text3 text-[1rem] font-medium">
+                    <img {% if restaurant.logo %} src="{{ restaurant.logo.url }}" {% endif %} alt="LOGO" width="120px">
                     <br>
-                    {{ restaurant.title }}
+                    <h3>{{ restaurant.title }}</h3>
                 </td>
-                <td style="width: max-content"><p style="width: max-content">{{ restaurant.location }}</p></td>
+                <td>{{ restaurant.location }}</td>
                 <td>{{ restaurant.phone_number }}</td>
                 <td>{% if restaurant.status %}Активирован{% else %}Неактивен{% endif %}</td>
                 <td>{{ restaurant.orders.count }}</td>

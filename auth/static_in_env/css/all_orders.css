@@ -54,6 +54,7 @@ input.nosubmit {
 
 tbody {
   border-top: 1px solid #ebeff2;
+  width: 100%;
 }
 
 th {
@@ -62,20 +63,20 @@ th {
   color: #7d7d7d;
   padding: 2rem;
   text-align: center;
-  width: 4rem;
+  /*width: 4rem;*/
   white-space: nowrap; /* Запрет переноса слов */
-  min-width: 100px;
   margin: 0 1rem;
+  width: min-content;
 }
 
 td {
   font-size: 0.8125rem;
   font-weight: 400;
   color: #7d7d7d;
-  padding: 1.5rem;
-  text-align: start;
-  white-space: nowrap; /* Запрет переноса слов */
-  min-width: 100px;
+  padding: 1rem;
+  text-align: center;
+  word-break: break-all;
+  min-width: min-content;
   margin: 0 1rem;
 }
 
