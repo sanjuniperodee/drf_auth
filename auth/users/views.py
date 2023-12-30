@@ -493,9 +493,7 @@ class MyLoginView(LoginView):
         return render(request, 'login.html', {'form': form})
     def post(self, request, *args, **kwargs):
         form = AuthenticationForm(data=self.request.POST)
-        print(request.POST)
         if form.is_valid():
-            print(form)
             user = form.get_user()
             login(request, user)
             return redirect('restaurant_list')
