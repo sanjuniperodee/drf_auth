@@ -76,7 +76,7 @@ td {
   padding: 1rem;
   text-align: center;
   word-break: break-all;
-  min-width: min-content;
+  max-width: 200px;
   margin: 0 1rem;
 }
 
