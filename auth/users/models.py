@@ -67,7 +67,7 @@ class Restaurant(models.Model):
     average = models.CharField(max_length=255, null=True, verbose_name='Средний чек')
     food_type = models.CharField(max_length=255, verbose_name='Тип еды')
     phone_number = models.CharField(max_length=255, verbose_name='Номер телефона')
-    menu = models.FileField(null=True, verbose_name='Меню', blank=True)
+    menu = models.ManyToManyField(ImageModel, null=True, verbose_name='Меню', blank=True, default=None)
     sales = models.ImageField(null=True, default=None, verbose_name='Акции')
     slug = models.SlugField(null=True, verbose_name='ссылка')
     location = models.CharField(max_length=255, null=True, verbose_name='Адресс')

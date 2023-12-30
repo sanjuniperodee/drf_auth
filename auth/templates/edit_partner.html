@@ -188,10 +188,21 @@
                     </svg>
                 </div>
                 <!--photos-->
-                <label>Главная фотка</label>
+                <p>Главная фотка</p>
                 <br>
-                {{ form.image }}
-                                <p class=" font-normal text-2xl">Фото</p>
+                <input
+                    type="file"
+                    name="image"
+                    accept="image/x-png, image/jpeg"
+                    id="mainImageInput"
+                    style="display: none"
+                />
+{#            {{ form.image }}#}
+                <label for="mainImageInput">
+                    <img id="mainImage" src="{{ restaurant.image.url }}" alt="hz"
+                             width="300px">
+                </label>
+                        <p class=" font-normal text-2xl">Фото</p>
                 <div class=" flex flex-row gap-4" id="uploadImages">
                     <!--photo card-->
                     <div class="flex-row gap-4" style="width: 100%; display: flex">
@@ -262,7 +273,7 @@
                             <div class="font-normal">
                                 <select id="id_tags" name="tags" multiple class="form-control">
                                     {% for tag in form.tags.field.queryset %}
-                                        <option value="{{ tag.id }}" {% if tag in form.tags %} selected {% endif %}>
+                                        <option value="{{ tag.id }}" {% if tag in restaurant.tags.all %} selected {% endif %}>
                                             {{ tag.title }}
                                         </option>
                                     {% endfor %}
@@ -402,15 +413,26 @@
                                 суммы рассрочки
                             </p>
                             <!-- First block checkbox -->
-                            <div>
-                                <ul class="text-xl">
-                                    {% for sum_of_credit in form.sum_of_credit %}
-                                    <li class="flex items-center">
-                                        {{ sum_of_credit }}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
+                            <div class="font-normal">
+                                {{ form.sum_of_credit }}
+{#                                <select id="sum_of_credit" name="sum_of_credit" multiple class="form-control">#}
+{#                                    {% for sum in form.sum_of_credit %}#}
+{#                                        <option value="{{ sum.id }}" {% if sum in restaurant.sum_of_credit.all %} selected {% endif %}>#}
+{#                                            {{ sum }}#}
+{#                                        </option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
                             </div>
+{#                            <div>#}
+{#                                <ul class="text-xl">#}
+{##}
+{#                                    {% for sum_of_credit in form.sum_of_credit %}#}
+{#                                    <li class="flex items-center" {% if sum_of_credit in restaurant.sum_of_credit.all %} ch>#}
+{#                                        {{ sum_of_credit }}#}
+{#                                    </li>#}
+{#                                    {% endfor %}#}
+{#                                </ul>#}
+{#                            </div>#}
                         </div>
                         <div class="flex gap-32">
                             <!-- Second block -->
@@ -420,13 +442,21 @@
                             </p>
                             <!-- Second block checkbox -->
                             <div>
-                                <ul class="text-xl">
-                                    {% for period_of_credit in form.period_of_credit %}
-                                    <li class="flex items-center">
-                                        {{ period_of_credit }}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
+{#                                <ul class="text-xl">#}
+                            {{ form.period_of_credit  }}
+{#                                <select id="period_of_credit" name="period_of_credit" multiple class="form-control">#}
+{#                                    {% for period_of_credit in form.period_of_credit %}#}
+{#                                        <option value="{{ period_of_credit.id }}" {% if period_of_credit in restaurant.period_of_credit.all %} selected {% endif %}>#}
+{#                                            {{ period_of_credit }}#}
+{#                                        </option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                                    {% for period_of_credit in form.period_of_credit %}#}
+{#                                    <li class="flex items-center">#}
+{#                                        {{ period_of_credit }}#}
+{#                                    </li>#}
+{#                                    {% endfor %}#}
+{#                                </ul>#}
                             </div>
                         </div>
 
@@ -461,8 +491,19 @@
 </div>
 <script>
     const logoInput = document.getElementById('image-logo');
-    const logoLabel = document.getElementById('logo-label');
     const logoImage = document.getElementById('logo');
+{#<input#}
+{#    type="image"#}
+{#    name="image"#}
+{#    id="image"#}
+{#    style="display: none"#}
+{#>#}
+{#<label for="image">#}
+{#    <img id="mainImage" src="{{ restaurant.image.url }}" alt="hz"#}
+{#             width="300px">#}
+{#</label>#}
+    const mainInput = document.querySelector('[name="image"]');
+    const mainImage = document.getElementById('mainImage');
 
     // Change logo image when a new image is selected
     logoInput.addEventListener('change', async function () {
@@ -500,6 +541,39 @@
             // Handle errors: Maybe show an error message to the user
         }
     });
+    mainInput.addEventListener('change', async function () {
+        const selectedFile = this.files[0];
+        mainImage.src = await convertToBase64(selectedFile);
+        {#imageElement.classList = "w-52 h-32 rounded-3xl border border-primary"#}
+
+        // Add the uploaded image to the list
+        {#const formData = new FormData();#}
+        {#formData.append('images', selectedFile);#}
+        {#try {#}
+        {#    const csrftoken = getCookie('csrftoken'); // Retrieve the CSRF token from the cookie#}
+        {##}
+        {#    const response = await fetch('/upload-logo/' + {{restaurant.id}},#}
+        {#        {#}
+        {#            method: 'POST',#}
+        {#                headers: {#}
+        {#                'X-CSRFToken': csrftoken // Include the CSRF token in the request headers#}
+        {#            },#}
+        {#            body: formData#}
+        {#        }#}
+        {#    );#}
+        {#    if (response.ok) {#}
+        {#        console.log('Images uploaded successfully!');#}
+        {#        window.location.reload()#}
+        {#        // Handle success: Maybe show a success message to the user#}
+        {#    } else {#}
+        {#        console.error('Failed to upload images:', response.statusText);#}
+        {#        // Handle failure: Maybe show an error message to the user#}
+        {#    }#}
+        {#} catch (error) {#}
+        {#    console.error('Error uploading images:', error);#}
+        {#    // Handle errors: Maybe show an error message to the user#}
+        {#}#}
+    });
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -507,7 +581,6 @@
     }
 
     const input_file = document.getElementById('image-file');
-    const input_label = document.getElementById('image-label');
     const imageList = document.getElementById('image-list');
 
     const convertToBase64 = file => new Promise((resolve) => {

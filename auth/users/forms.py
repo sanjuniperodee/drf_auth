@@ -23,23 +23,23 @@ class RestaurantForm(ModelForm):
     class Meta:
         model = Restaurant
         fields = ['logo', 'title', 'description', 'location', 'average','tags','image',
-                  'kitchen', 'phone_number', 'work_days_1',
-                  'work_hours_1', 'work_days_2', 'work_hours_2', 'menu', 'images', 'whatsapp', 'insta', 'slug']
+                  'kitchen', 'phone_number', 'work_days_1', 'sum_of_credit', 'period_of_credit',
+                  'work_hours_1', 'work_days_2', 'work_hours_2', 'images', 'whatsapp', 'insta', 'slug']
 
 
-    period_of_credit = forms.ModelMultipleChoiceField(
-        queryset=PeriodOfCredit.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        label='Срок кредита',
-        required=False
-    )
-
-    sum_of_credit = forms.ModelMultipleChoiceField(
-        queryset=SumOfCredit.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-        label='Сумма кредита'
-    )
+    # period_of_credit = forms.ModelMultipleChoiceField(
+    #     queryset=PeriodOfCredit.objects.all(),
+    #     widget=forms.CheckboxSelectMultiple,
+    #     label='Срок кредита',
+    #     required=False
+    # )
+    #
+    # sum_of_credit = forms.ModelMultipleChoiceField(
+    #     queryset=SumOfCredit.objects.all(),
+    #     widget=forms.CheckboxSelectMultiple,
+    #     required=False,
+    #     label='Сумма кредита'
+    # )
 
     def save(self, commit=True):
         restaurant = super().save(commit=commit)
