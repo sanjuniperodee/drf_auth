@@ -54,19 +54,17 @@
         <form method="post" enctype="multipart/form-data" class="mt-10 flex flex-col justify-between items-center bg-white p-4 rounded-2xl gap-3 mb-10">
             {% csrf_token %}
             <h3 class="font-extrabold text-2xl">Вход</h3>
-            <input name="{{ form.username.name }}"
+            <input name="username"
                 class=" border text-primary font-medium w-full rounded-md py-2 border-primary text-center outline-primary"
                 placeholder="Login" />
-            <input name="{{ form.password.name }}" type="password"
+            <input name="password" type="password"
                 class=" border text-primary font-medium w-full rounded-md py-2 border-primary text-center outline-primary"
                 placeholder="Password" />
             <button
                 class=" border text-white bg-primary font-medium w-full rounded-md py-2 border-primary hover:bg-white hover:text-primary transition duration-500 ease-in-out">
                 Войти
             </button>
-            {% for error in form.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
+            {{error}}
         </form>
         <!---copy-->
         <div class="font-light text-xs text-center text-white">

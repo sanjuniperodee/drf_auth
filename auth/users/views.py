@@ -492,12 +492,15 @@ class MyLoginView(LoginView):
         form = AuthenticationForm()
         return render(request, 'login.html', {'form': form})
     def post(self, request, *args, **kwargs):
-        form = AuthenticationForm(request, data=request.POST)
+        form = AuthenticationForm(data=self.request.POST)
+        print(request.POST)
         if form.is_valid():
+            print(form)
             user = form.get_user()
             login(request, user)
-            return redirect('restaurant_list')  # Replace 'restaurant_list' with your desired URL name
-        return render(request, 'login.html', {'form': form})
+            return redirect('restaurant_list')
+        else:
+            return render(request, 'login.html', {'error': 'Неверный логин или пароль'}, status=404)
 
 
 class MyLogoutView(LogoutView):
