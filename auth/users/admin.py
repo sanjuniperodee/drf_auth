@@ -52,6 +52,7 @@ admin.site.register(Certificate, CertificateAdmin)
 
 admin.site.register(Favorites)
 admin.site.register(Tag)
+admin.site.register(Banner)
 admin.site.register(User, UserAdmin)
 admin.site.register(ImageModel)
 admin.site.register(Status, StatusAdmin)

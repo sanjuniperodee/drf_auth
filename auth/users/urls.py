@@ -27,5 +27,7 @@ urlpatterns = [
     path('delete_image/<int:image_id>', delete_image, name='delete_image'),
     path('upload-images/<int:id>', upload_images_view, name='upload_images'),
     path('upload-logo/<int:id>', upload_logo_view, name='upload_images'),
+    path('users', UserListView.as_view(), name='user_list'),
+    path('edit_banner', EditBanner.as_view(), name='edit_banner')
 
 ]

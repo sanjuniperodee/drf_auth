@@ -23,6 +23,9 @@ class PeriodOfCredit(models.Model):
     def __str__(self):
         return f'{self.months} месяцев'
 
+class Banner(models.Model):
+    image = models.ImageField(verbose_name='Баннер')
+
 class User(AbstractUser):
     first_name = models.CharField(max_length=255, verbose_name='Имя')
     last_name = models.CharField(max_length=255, verbose_name='Фамилия')

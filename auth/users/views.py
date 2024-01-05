@@ -592,6 +592,46 @@ class RestaurantListView(APIView):
         return Response({'restaurants': queryset, 'total_restaurants': total_restaurants})
 
 
+class UserListView(APIView):
+    permission_classes = [IsAdminUser]
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'all_users.html'
+
+    def get(self, request):
+        queryset = User.objects.all()
+        total_users = queryset.count()
+        # Обработка поиска
+        search_query = request.GET.get('search_query')
+        if search_query:
+            queryset = queryset.filter(
+                Q(first_name__icontains=search_query) |
+                Q(last_name__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(phone_number__icontains=search_query)
+            )
+
+        return Response({'users': queryset, 'total_restaurants': total_users})
+
+class EditBanner(APIView):
+    permission_classes = [IsAdminUser]
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'EditBanner.html'
+
+    def get(self, request):
+        return Response({'banner': Banner.objects.first()})
+
+    def post(self, request):
+        image_file = request.FILES.get('image')
+
+        if image_file:
+            # Create or update your Banner model instance
+            banner_instance = Banner.objects.first()  # Adjust this to fetch the banner you want to update/create
+            banner_instance.image = image_file
+            banner_instance.save()
+            return Response({'banner': Banner.objects.first()})
+        return Response({'ok': False}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class RestaurantEditView(APIView):
     permission_classes = [IsAdminUser]
     renderer_classes = [TemplateHTMLRenderer]

@@ -27,7 +27,7 @@
 
 <body>
 <!--Container-->
-<div style="display: flex; justify-content: flex-start; width: 100%">
+<div class=" flex">
     <!--SideBar-->
     <div class="sidebar bg-secondary p-8 flex flex-col  items-center h-screen ">
         <!--Logo-->
@@ -56,39 +56,40 @@
         <div class=" flex flex-col gap-2">
             <!--Add partner-->
             <a href="{% url 'restaurant_create' %}">
-            <button
-                    class=" rounded-md flex flex-row gap-2 bg-primary text-white py-2 px-3 hover:scale-105 transition ease-in-out duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path
-                            d="M7.00696 12C7.00696 11.8011 7.08598 11.6103 7.22663 11.4697C7.36728 11.329 7.55805 11.25 7.75696 11.25H11.25V7.75702C11.25 7.55811 11.329 7.36734 11.4696 7.22669C11.6103 7.08604 11.801 7.00702 12 7.00702C12.1989 7.00702 12.3896 7.08604 12.5303 7.22669C12.6709 7.36734 12.75 7.55811 12.75 7.75702V11.25H16.243C16.4419 11.25 16.6326 11.329 16.7733 11.4697C16.9139 11.6103 16.993 11.8011 16.993 12C16.993 12.1989 16.9139 12.3897 16.7733 12.5303C16.6326 12.671 16.4419 12.75 16.243 12.75H12.75V16.243C12.75 16.4419 12.6709 16.6327 12.5303 16.7733C12.3896 16.914 12.1989 16.993 12 16.993C11.801 16.993 11.6103 16.914 11.4696 16.7733C11.329 16.6327 11.25 16.4419 11.25 16.243V12.75H7.75696C7.55805 12.75 7.36728 12.671 7.22663 12.5303C7.08598 12.3897 7.00696 12.1989 7.00696 12Z"
-                            fill="white"/>
-                    <path fill-rule="evenodd" clip-rule="evenodd"
-                          d="M7.31696 3.76897C10.4294 3.42393 13.5705 3.42393 16.683 3.76897C18.51 3.97297 19.985 5.41197 20.199 7.24897C20.569 10.406 20.569 13.595 20.199 16.752C19.984 18.589 18.509 20.027 16.683 20.232C13.5705 20.577 10.4294 20.577 7.31696 20.232C5.48996 20.027 4.01496 18.589 3.80096 16.752C3.43174 13.5951 3.43174 10.4059 3.80096 7.24897C4.01496 5.41197 5.49096 3.97297 7.31696 3.76897ZM16.517 5.25897C13.5148 4.92621 10.4851 4.92621 7.48296 5.25897C6.92721 5.32063 6.40847 5.56785 6.01054 5.96069C5.61262 6.35353 5.35876 6.86906 5.28996 7.42397C4.93431 10.4649 4.93431 13.537 5.28996 16.578C5.35897 17.1327 5.61292 17.648 6.01083 18.0406C6.40873 18.4333 6.92736 18.6804 7.48296 18.742C10.46 19.074 13.54 19.074 16.517 18.742C17.0724 18.6802 17.5908 18.433 17.9885 18.0404C18.3862 17.6477 18.64 17.1326 18.709 16.578C19.0646 13.537 19.0646 10.4649 18.709 7.42397C18.6398 6.86957 18.3859 6.35462 17.9882 5.9622C17.5905 5.56977 17.0722 5.32275 16.517 5.26097V5.25897Z"
-                          fill="white"/>
-                </svg>
-                Добавить партнера
-            </button>
+                <button
+                        class=" rounded-md flex flex-row gap-2 bg-primary text-white py-2 px-3 hover:scale-105 transition ease-in-out duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path
+                                d="M7.00696 12C7.00696 11.8011 7.08598 11.6103 7.22663 11.4697C7.36728 11.329 7.55805 11.25 7.75696 11.25H11.25V7.75702C11.25 7.55811 11.329 7.36734 11.4696 7.22669C11.6103 7.08604 11.801 7.00702 12 7.00702C12.1989 7.00702 12.3896 7.08604 12.5303 7.22669C12.6709 7.36734 12.75 7.55811 12.75 7.75702V11.25H16.243C16.4419 11.25 16.6326 11.329 16.7733 11.4697C16.9139 11.6103 16.993 11.8011 16.993 12C16.993 12.1989 16.9139 12.3897 16.7733 12.5303C16.6326 12.671 16.4419 12.75 16.243 12.75H12.75V16.243C12.75 16.4419 12.6709 16.6327 12.5303 16.7733C12.3896 16.914 12.1989 16.993 12 16.993C11.801 16.993 11.6103 16.914 11.4696 16.7733C11.329 16.6327 11.25 16.4419 11.25 16.243V12.75H7.75696C7.55805 12.75 7.36728 12.671 7.22663 12.5303C7.08598 12.3897 7.00696 12.1989 7.00696 12Z"
+                                fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M7.31696 3.76897C10.4294 3.42393 13.5705 3.42393 16.683 3.76897C18.51 3.97297 19.985 5.41197 20.199 7.24897C20.569 10.406 20.569 13.595 20.199 16.752C19.984 18.589 18.509 20.027 16.683 20.232C13.5705 20.577 10.4294 20.577 7.31696 20.232C5.48996 20.027 4.01496 18.589 3.80096 16.752C3.43174 13.5951 3.43174 10.4059 3.80096 7.24897C4.01496 5.41197 5.49096 3.97297 7.31696 3.76897ZM16.517 5.25897C13.5148 4.92621 10.4851 4.92621 7.48296 5.25897C6.92721 5.32063 6.40847 5.56785 6.01054 5.96069C5.61262 6.35353 5.35876 6.86906 5.28996 7.42397C4.93431 10.4649 4.93431 13.537 5.28996 16.578C5.35897 17.1327 5.61292 17.648 6.01083 18.0406C6.40873 18.4333 6.92736 18.6804 7.48296 18.742C10.46 19.074 13.54 19.074 16.517 18.742C17.0724 18.6802 17.5908 18.433 17.9885 18.0404C18.3862 17.6477 18.64 17.1326 18.709 16.578C19.0646 13.537 19.0646 10.4649 18.709 7.42397C18.6398 6.86957 18.3859 6.35462 17.9882 5.9622C17.5905 5.56977 17.0722 5.32275 16.517 5.26097V5.25897Z"
+                              fill="white"/>
+                    </svg>
+                    Добавить партнера
+                </button>
             </a>
             <!--List partner-->
             <a href="{% url 'restaurant_list' %}">
-            <button class=" rounded-md flex flex-row gap-2 py-2 px-3 hover:bg-slate-300 hover:bg-opacity-70">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path
-                            d="M4.5 9C5.32843 9 6 8.32843 6 7.5C6 6.67157 5.32843 6 4.5 6C3.67157 6 3 6.67157 3 7.5C3 8.32843 3.67157 9 4.5 9Z"
-                            fill="black"/>
-                    <path
-                            d="M4.5 13.5C5.32843 13.5 6 12.8284 6 12C6 11.1716 5.32843 10.5 4.5 10.5C3.67157 10.5 3 11.1716 3 12C3 12.8284 3.67157 13.5 4.5 13.5Z"
-                            fill="black"/>
-                    <path
-                            d="M4.5 18C5.32843 18 6 17.3284 6 16.5C6 15.6716 5.32843 15 4.5 15C3.67157 15 3 15.6716 3 16.5C3 17.3284 3.67157 18 4.5 18Z"
-                            fill="black"/>
-                    <path
-                            d="M20.25 8.25H9.75C9.33 8.25 9 7.92 9 7.5C9 7.08 9.33 6.75 9.75 6.75H20.25C20.67 6.75 21 7.08 21 7.5C21 7.92 20.67 8.25 20.25 8.25ZM20.25 12.75H9.75C9.33 12.75 9 12.42 9 12C9 11.58 9.33 11.25 9.75 11.25H20.25C20.67 11.25 21 11.58 21 12C21 12.42 20.67 12.75 20.25 12.75ZM20.25 17.25H9.75C9.33 17.25 9 16.92 9 16.5C9 16.08 9.33 15.75 9.75 15.75H20.25C20.67 15.75 21 16.08 21 16.5C21 16.92 20.67 17.25 20.25 17.25Z"
-                            fill="black"/>
-                </svg>
-                Cписок партнеров
-            </button>
-                </a>
+                <button class=" rounded-md flex flex-row gap-2 py-2 px-3 hover:bg-slate-300 hover:bg-opacity-70">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path
+                                d="M4.5 9C5.32843 9 6 8.32843 6 7.5C6 6.67157 5.32843 6 4.5 6C3.67157 6 3 6.67157 3 7.5C3 8.32843 3.67157 9 4.5 9Z"
+                                fill="black"/>
+                        <path
+                                d="M4.5 13.5C5.32843 13.5 6 12.8284 6 12C6 11.1716 5.32843 10.5 4.5 10.5C3.67157 10.5 3 11.1716 3 12C3 12.8284 3.67157 13.5 4.5 13.5Z"
+                                fill="black"/>
+                        <path
+                                d="M4.5 18C5.32843 18 6 17.3284 6 16.5C6 15.6716 5.32843 15 4.5 15C3.67157 15 3 15.6716 3 16.5C3 17.3284 3.67157 18 4.5 18Z"
+                                fill="black"/>
+                        <path
+                                d="M20.25 8.25H9.75C9.33 8.25 9 7.92 9 7.5C9 7.08 9.33 6.75 9.75 6.75H20.25C20.67 6.75 21 7.08 21 7.5C21 7.92 20.67 8.25 20.25 8.25ZM20.25 12.75H9.75C9.33 12.75 9 12.42 9 12C9 11.58 9.33 11.25 9.75 11.25H20.25C20.67 11.25 21 11.58 21 12C21 12.42 20.67 12.75 20.25 12.75ZM20.25 17.25H9.75C9.33 17.25 9 16.92 9 16.5C9 16.08 9.33 15.75 9.75 15.75H20.25C20.67 15.75 21 16.08 21 16.5C21 16.92 20.67 17.25 20.25 17.25Z"
+                                fill="black"/>
+                    </svg>
+                    Cписок партнеров
+                </button>
+            </a>
+            <!--Zayavki-->
             <a href="{% url "user_list" %}">
                 <button class=" rounded-md flex flex-row gap-2 py-2 px-3 hover:bg-slate-300 hover:bg-opacity-70">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -115,7 +116,6 @@
                 Пользователи
                 </button>
             </a>
-            <!--Zayavki-->
             <button id="requestsBtn"
                     class=" flex flex-row gap-2 py-2 px-3 hover:bg-slate-300 hover:bg-opacity-70 rounded-md">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -165,6 +165,7 @@
             <a class=" flex flex-row gap-2 py-2 px-3 hover:bg-slate-300 hover:bg-opacity-70 rounded-md" href="{% url 'edit_banner' %}">Баннер</a>
         </div>
         <!-- Logout button -->
+
         <button
                 class="rounded-md flex flex-row  w-full gap-2  py-2 px-3 mt-auto hover:bg-slate-300 hover:bg-opacity-70 transition ease-in-out duration-300 ">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -176,146 +177,63 @@
                         d="M9.75 20.25H4.5C4.30109 20.25 4.11032 20.171 3.96967 20.0303C3.82902 19.8897 3.75 19.6989 3.75 19.5V4.5C3.75 4.30109 3.82902 4.11032 3.96967 3.96967C4.11032 3.82902 4.30109 3.75 4.5 3.75H9.75"
                         stroke="#343434" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            Выйти
+            <a href="{% url 'logout' %}">Выйти
+                </a>
         </button>
+
     </div>
     <main class="content px-14 py-8 flex flex-col gap-3">
         <!--list of partners-->
-        <h2 class="text-4xl font-bold text-text">{{ status }}</h2>
+        <h2 class="text-4xl font-bold text-text">Cписок партнеров</h2>
         <!--Count of partners -->
         <div class=" flex gap-24">
             <div class=" flex flex-col items-center">
-                <h2 class=" text-text font-medium text-6xl">{{ total_orders }}</h2>
-                <p class=" text-text1 font-medium">Всего партнеров</p>
-            </div>
-            <div class=" border boredr-text4"></div>
-            <div class=" flex flex-col items-center">
-                <h2 class=" text-text font-medium text-6xl">{{ average }}</h2>
-                <p class=" text-text1 font-medium">Средний чек</p>
+                <h2 class=" text-text font-medium text-6xl">{{total_users}}</h2>
+                <p class=" text-text1 font-medium">Всего пользователей</p>
             </div>
         </div>
         <!--Search-->
-        <form method="get" action="{% url 'order_list' status %}">
+        <form method="get">
             <div class="nosubmit  w-96">
-                <input class="nosubmit outline-none" name="search_query" value="{{ request.GET.search_query }}"
-                       type="search" placeholder="Search...">
+                <input class="nosubmit outline-none " type="text" name="search_query"
+                       value="{{ request.GET.search_query }}" placeholder="Search...">
             </div>
             <br>
-            <!--filter and upadate-->
-            <div class=" flex justify-between items-center max-w-6xl">
-                <!--Filter-->
-                <div class="flex gap-4 items-center">
-                    <h4 class=" font-bold text-text">Фильтр:</h4>
-                    <div class="flex bg-secondary items-center px-3 py-1 rounded-md hover:opacity-75 cursor-pointer">
-                        {% if request.GET.sort_sum == 'asc' %}
-                        <button type="submit" name="sort_sum" value="desc">По возрастанию числа заявок</button>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M18 15L12 9L6 15" stroke="#3153CA" stroke-width="1.3" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        {% else %}
-                        <button type="submit" name="sort_sum" value="asc">По убыванию числа заявок</button>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 9L12 15L18 9" stroke="#3153CA" stroke-width="1.3" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-
-                        {% endif %}
-                    </div>
-                    <div class="flex bg-secondary items-center px-3 py-1 rounded-md hover:opacity-75 cursor-pointer">
-                        {% if request.GET.sort_sum == 'asc' %}
-                        <button type="submit" name="sort_sum" value="desc">По возрастанию числа заявок</button>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M18 15L12 9L6 15" stroke="#3153CA" stroke-width="1.3" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                        {% else %}
-                        <button type="submit" name="sort_sum" value="asc">По убыванию числа заявок</button>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M6 9L12 15L18 9" stroke="#3153CA" stroke-width="1.3" stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-
-                        {% endif %}
-                    </div>
-                </div>
-                <!--update list-->
-                <div class="flex gap-1 hover:bg-primary hover:bg-opacity-10 p-1 rounded-md cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path
-                                d="M17.65 6.35001C16.8118 5.50428 15.7944 4.85762 14.6728 4.4578C13.5512 4.05798 12.3542 3.9152 11.17 4.04001C7.50002 4.41001 4.48002 7.39001 4.07002 11.06C3.52002 15.91 7.27002 20 12 20C13.5101 20 14.9892 19.5715 16.2655 18.7643C17.5418 17.9572 18.5628 16.8044 19.21 15.44C19.53 14.77 19.05 14 18.31 14C17.94 14 17.59 14.2 17.43 14.53C16.8494 15.779 15.8564 16.79 14.6179 17.3928C13.3795 17.9957 11.9712 18.1536 10.63 17.84C8.41002 17.35 6.62002 15.54 6.15002 13.32C5.95245 12.4423 5.95474 11.5313 6.15672 10.6546C6.35869 9.77787 6.75519 8.95776 7.31687 8.25493C7.87856 7.55211 8.59107 6.98454 9.40169 6.59423C10.2123 6.20392 11.1003 6.00084 12 6.00001C13.66 6.00001 15.14 6.69001 16.22 7.78001L14.71 9.29001C14.08 9.92001 14.52 11 15.41 11H19C19.55 11 20 10.55 20 10V6.41001C20 5.52001 18.92 5.07001 18.29 5.70001L17.65 6.35001Z"
-                                fill="#3153CA"/>
-                    </svg>
-                    <h4 class="text-primary font-medium ">Обновить список</h4>
-                </div>
-            </div>
         </form>
         <!--Table-->
-        <table style="width: 100%">
+        <table class=" mt-10">
             <!--Headers-->
             <thead>
             <tr>
-                <th colspan="1">ID клиента</th>
-                <th colspan="1">ФИО клиента</th>
-                <th colspan="1">Время подачи</th>
-                <th colspan="1">Номер телефона</th>
-                <th colspan="1">Email</th>
-                <th colspan="1">Заведение</th>
-                <th colspan="1">На срок</th>
-                <th colspan="1">Сумма</th>
+                <th>ID</th>
+                <th>ФИО</th>
+                <th>Почта</th>
+                <th>Номер телефона</th>
+                <th>Статус</th>
+                <th>Обработано заявок</th>
+
             </tr>
             </thead>
             <!--rows-->
             <tbody>
-            {% for order in orders %}
+            {% for user in users %}
             <tr>
-                <td>
-                    {{ order.user.id }}
+                <td> {{ user.pk }} </td>
+                <td class="items-center text-text3 text-[1rem] font-medium">
+                   {{ user.first_name }} {{ user.last_name }}
                 </td>
-                <td class=" flex items-center text-text3 text-[0.93rem] font-medium  w-52">
-                    {{ order.user.first_name }} {{ order.user.last_name }}
-                </td>
-                <td>{{ order.date }}</td>
-                <td class="">{{ order.user.phone_number }}</td>
-                <td>{{ order.user.email }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone_number }}</td>
+                <td> </td>
                 <td>
-                    {{ order.restaurant }}
+{#                    {{ restaurant.total_order_sum }}#}
                 </td>
-                <td>{{ order.period_of_credit }}</td>
-                <td>{{ order.sum_of_credit.sum }}</td>
                 <td>
-                    <div class="relative inline-block text-left" onclick="toggleDropdown()">
-                        <svg class="hover:bg-secondary  w-7 h-7 p-1 rounded-full cursor-pointer"
-                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
-                             fill="none">
-                            <g clip-path="url(#clip0_509_645)">
-                                <ellipse cx="7.66663" cy="3" rx="1" ry="1" fill="#747474"/>
-                                <ellipse cx="7.66663" cy="8.33333" rx="1" ry="1" fill="#747474"/>
-                                <ellipse cx="7.66663" cy="13.6667" rx="1" ry="1" fill="#747474"/>
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_509_645">
-                                    <rect width="16" height="16" fill="white"/>
-                                </clipPath>
-                            </defs>
-                        </svg>
-                        <div class=" absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ">
-                            <div id="dropdownMenu" class="py-1 hidden">
-                                <a href="#"
-                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Скопировать</a>
-                                <button type="submit" onclick="delete_by_id({{ order.pk }})"
-                                        class="block px-4 py-2 text-sm  text-red-500 hover:bg-gray-100">Удалить из
-                                    списка
-                                </button>
 
-                            </div>
-                        </div>
-                    </div>
                 </td>
             </tr>
             {% endfor %}
             </tbody>
-        </table>
     </main>
 </div>
 <script>
@@ -332,14 +250,11 @@
         }
     });
 
-    function toggleDropdown() {
-        var dropdownMenu = document.getElementById('dropdownMenu');
+    function toggleDropdown(restaurantId) {
+        var dropdownMenu = document.getElementById('dropdownMenu' + restaurantId);
         dropdownMenu.classList.toggle('hidden');
     }
-    function delete_by_id(id){
-        fetch('/order/' + id + '/delete');
-        window.location.reload();
-    }
+
 </script>
 </body>
 
