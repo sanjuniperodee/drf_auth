@@ -202,7 +202,7 @@
                           style="display : none"
                         />
                     <label for="image-logo" class=" rounded-full w-32 h-32" >
-                        <img id="logo" src="{% static 'assets/img.png' %}" alt="hz"
+                        <img id="logo" src="{% static 'images/add_photo.png' %}" alt="Logo"
                                  class=" rounded-full w-32 h-32">
                     </label>
                     <input name="{{ form.title.name }}" class="bg-secondary p-3 rounded-md"
@@ -395,11 +395,12 @@
                     <!-- First block checkbox -->
                     <div>
                         <ul class="text-xl">
-                            {% for sum_of_credit in form.sum_of_credit %}
-                            <li class="flex items-center">
-                                {{ sum_of_credit }}
-                            </li>
-                            {% endfor %}
+                            {{ form.sum_of_credit }}
+{#                            {% for sum_of_credit in form.sum_of_credit %}#}
+{#                            <li class="flex items-center">#}
+{#                                {{ sum_of_credit }}#}
+{#                            </li>#}
+{#                            {% endfor %}#}
                         </ul>
                     </div>
                 </div>
@@ -412,11 +413,12 @@
                     <!-- Second block checkbox -->
                     <div>
                         <ul class="text-xl">
-                            {% for period_of_credit in form.period_of_credit %}
-                            <li class="flex items-center">
-                                {{ period_of_credit }}
-                            </li>
-                            {% endfor %}
+                            {{ form.period_of_credit }}
+{#                            {% for period_of_credit in form.period_of_credit %}#}
+{#                            <li class="flex items-center">#}
+{#                                {{ period_of_credit }}#}
+{#                            </li>#}
+{#                            {% endfor %}#}
                         </ul>
                     </div>
                 </div>
