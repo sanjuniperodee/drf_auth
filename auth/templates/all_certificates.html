@@ -30,7 +30,7 @@
 <div class=" flex">
     <!--SideBar-->
     {% include 'sidebar.html' %}
-    <main class="content px-14 py-8 flex flex-col gap-3">
+    <main class="content px-14 py-8 flex flex-col gap-3" style="padding: 4%">
         <!--list of partners-->
         <h2 class="text-4xl font-bold text-text">Cписок партнеров</h2>
         <!--Count of partners -->
@@ -54,31 +54,26 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>ФИО</th>
-                <th>Почта</th>
-                <th>Номер телефона</th>
+                <th>Пользователь</th>
+                <th>Ресторат</th>
+                <th>Дата активации</th>
+                <th>Код Сертификата</th>
                 <th>Статус</th>
-                <th>Обработано заявок</th>
 
             </tr>
             </thead>
             <!--rows-->
             <tbody>
-            {% for user in users %}
+            {% for certificate in certificates %}
             <tr>
-                <td> {{ user.pk }} </td>
+                <td> {{ certificate.pk }} </td>
                 <td class="items-center text-text3 text-[1rem] font-medium">
-                   {{ user.first_name }} {{ user.last_name }}
+                   {{ certificate.user.first_name }} {{ certificate.user.last_name }}
                 </td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone_number }}</td>
-                <td> </td>
-                <td>
-{#                    {{ restaurant.total_order_sum }}#}
-                </td>
-                <td>
-
-                </td>
+                <td>{{ certificate.restaurant }}</td>
+                <td>{{ certificate.start_date }}</td>
+                <td> {{ certificate.encode }} </td>
+                <td>{{ certificate.status }} </td>
             </tr>
             {% endfor %}
             </tbody>

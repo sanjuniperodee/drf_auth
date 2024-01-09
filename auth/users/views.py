@@ -612,6 +612,27 @@ class UserListView(APIView):
 
         return Response({'users': queryset, 'total_restaurants': total_users})
 
+
+class CertificateListView(APIView):
+    permission_classes = [IsAdminUser]
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'all_certificates.html'
+
+    def get(self, request):
+        queryset = Certificate.objects.all()
+        total_users = queryset.count()
+        # Обработка поиска
+        search_query = request.GET.get('search_query')
+        if search_query:
+            queryset = queryset.filter(
+                Q(user__first_name__icontains=search_query) |
+                Q(user__last_name__icontains=search_query) |
+                Q(sum__sum__icontains=search_query) |
+                Q(restaurant__title__icontains=search_query)
+            )
+
+        return Response({'certificates': queryset, 'total_restaurants': total_users})
+
 class EditBanner(APIView):
     permission_classes = [IsAdminUser]
     renderer_classes = [TemplateHTMLRenderer]
