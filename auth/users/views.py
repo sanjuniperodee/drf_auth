@@ -251,18 +251,18 @@ def handle(request):
         certificate.save()
         with open("auth//template.html", "r") as f:
             email_template = f.read()
-        email_template = email_template.replace("Акжонов Досжан Дарахнович", user.first_name)
+        email_template = email_template.replace("Акжонов Досжан Дарахнович", status.user.first_name)
         email_template = email_template.replace("30000 ₸", str(certificate.sum))
         email_template = email_template.replace("408948", "Не активирован")
         message = MIMEMultipart()
         message["From"] = smtp_username
-        message["To"] = user.email
+        message["To"] = status.user.email
         message["Subject"] = "Поздравляем! У вас новый сертификат"
         message.attach(MIMEText(email_template, "html"))
         with smtplib.SMTP("smtp.gmail.com", 587) as server:
             server.starttls()
             server.login(smtp_username, smtp_password)
-            server.sendmail(smtp_username, user.email, message.as_string())
+            server.sendmail(smtp_username, statususer.email, message.as_string())
             server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
     else:
         status.redirect_url = data.get('redirect_url')
