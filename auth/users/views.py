@@ -262,7 +262,7 @@ def handle(request):
         with smtplib.SMTP("smtp.gmail.com", 587) as server:
             server.starttls()
             server.login(smtp_username, smtp_password)
-            server.sendmail(smtp_username, statususer.email, message.as_string())
+            server.sendmail(smtp_username, status.user.email, message.as_string())
             server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
     else:
         status.redirect_url = data.get('redirect_url')
