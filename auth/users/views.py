@@ -192,6 +192,11 @@ def get_certificates_by_id(request, id):
 def handle(request):
     data = json.loads(request.body)
     print(data.get('uuid'))
+    print(data)
+    status = Status(
+        status=data
+    )
+    status.save()
     status = Status.objects.get(uuid=data.get('uuid'))
     status.stats = 'Выдано'
     if data.get('result'):
@@ -237,11 +242,10 @@ def handle(request):
         raw_data = request.body
         json_string = raw_data.decode('utf-8')
         data = json.loads(json_string)
-        user = User.objects.get(pk=data.get('reference_id'))
         certificate = Certificate(
             sum=SumOfCredit.objects.get(sum=int(data.get('approved_params').get('principal'))),
             period=PeriodOfCredit.objects.get(months=int(data.get('approved_params').get('period'))),
-            user=user,
+            user=status.user,
             restaurant=status.restaurant
         )
         certificate.save()
