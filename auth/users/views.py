@@ -528,6 +528,8 @@ class RestaurantCreateView(APIView):
         if form.is_valid():
             restaurant = form.save()
             return Response({'success': True, 'restaurant_id': restaurant.id})
+        print(form.errors)
+        return Response({'success': False})
 
 
 def delete_image(request, image_id):

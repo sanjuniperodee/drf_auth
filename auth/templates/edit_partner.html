@@ -77,7 +77,7 @@
                 />
 {#            {{ form.image }}#}
                 <label for="mainImageInput">
-                    <img id="mainImage" src="{{ restaurant.image.url }}" alt="hz"
+                    <img id="mainImage" {% if restaurant.image %} src="{{ restaurant.image.url }}" {% endif %}alt="hz"
                              width="300px">
                 </label>
                         <p class=" font-normal text-2xl">Фото</p>
