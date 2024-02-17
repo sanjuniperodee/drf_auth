@@ -679,13 +679,8 @@ class RestaurantEditView(APIView):
         form = RestaurantForm(request.POST, request.FILES, instance=restaurant)
         if form.is_valid():
             restaurant = form.save()
-            return redirect('restaurant_edit', pk=restaurant.pk)
-        else:
-            print('3')
-            tags = Tag.objects.all()
+        return redirect('restaurant_edit', pk=restaurant.pk)
 
-            return render(request, self.template_name, {'form': form, 'success': False, 'restaurant': restaurant, 'images': images,
-                                                        'tags': tags})
 
 
 class RestaurantDeleteView(DeleteView):
