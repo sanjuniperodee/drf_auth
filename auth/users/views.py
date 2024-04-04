@@ -45,9 +45,37 @@ from .forms import MyAuthenticationForm, RestaurantForm, RestaurantImageForm
 lock = threading.Lock()
 condition = threading.Condition(lock)
 
+class HandleLeadRequest(APIView):
+    def post(self, request):
+        data = json.loads(request.body)
+        context = "Новая заявка на звонок"
+
+        context += "\nИмя: " + str(data.get('name'))
+        context += "\nНомер телефона: " + str(data.get('phone_number'))
+        context += "\nМероприятие: " + str(data.get('party'))
+        message = MIMEMultipart()
+
+        message.attach(MIMEText(context))
+        message["From"] = "support@reddel.kz"
+        message["To"] = "admin@reddel.kz"
+        message["Subject"] = "Новая заявка"
+
+        smtp_server = "smtp.gmail.com"
+        smtp_port = 587
+        smtp_username = "noreply.reddel@gmail.com"
+        smtp_password = "hfft yumf trrp vczw"
+
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(smtp_username, "admin@reddel.kz", message.as_string())
+        server.quit()
+        return Response(status=status.HTTP_200_OK)
 class IsAdminUser(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user and request.user.is_staff
+
+
 @api_view(['GET'])
 def get_restaurants(request):
     data = []
