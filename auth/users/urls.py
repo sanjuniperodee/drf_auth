@@ -30,6 +30,7 @@ urlpatterns = [
     path('upload-logo/<int:id>', upload_logo_view, name='upload_images'),
     path('users', UserListView.as_view(), name='user_list'),
     path('edit_banner', EditBanner.as_view(), name='edit_banner'),
-    path('certificates', CertificateListView.as_view(), name='certificates_list')
+    path('certificates', CertificateListView.as_view(), name='certificates_list'),
+    path('certificate-create', create_certificate_endpoint, name='certificate-create')
 
 ]

@@ -45,6 +45,37 @@ from .forms import MyAuthenticationForm, RestaurantForm, RestaurantImageForm
 lock = threading.Lock()
 condition = threading.Condition(lock)
 
+
+def create_certificate_endpoint(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        encrypted_data = data.get('encrypted_data', None)
+        key = "b'rRGzog3LDqIOoCZztjIMJyZ1nCBFkNTbIrwx2sfWf8k='"
+        cipher = Fernet(key)
+        decrypted_data = cipher.decrypt(bytes(encrypted_data, 'utf-8')).decode('utf-8')
+        decrypted_data = json.loads(decrypted_data)
+
+        user_phone = decrypted_data.get('contract', None)
+        sum_of_credit_id = decrypted_data.get('sum', None)
+
+        user = get_object_or_404(User, phone_number=user_phone)
+        sum_of_credit = get_object_or_404(SumOfCredit, pk=sum_of_credit_id)
+        period_of_credit = get_object_or_404(PeriodOfCredit, months=3)
+
+        # Create Certificate object
+        Certificate.objects.create(
+            sum=sum_of_credit,
+            period=period_of_credit,
+            user=user,
+            status=False,  # Default status
+            start_date=None,  # You may set these as needed
+            end_date=None
+        )
+
+        return JsonResponse({'message': 'Certificate created successfully'}, status=201)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
 class HandleLeadRequest(APIView):
     def post(self, request):
         data = json.loads(request.body)
