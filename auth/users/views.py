@@ -53,7 +53,7 @@ def create_certificate_endpoint(request):
         data = json.loads(request.body)
         print(data)
         encrypted_data = data.get('encrypted_data', None)
-        key = "b'rRGzog3LDqIOoCZztjIMJyZ1nCBFkNTbIrwx2sfWf8k='"
+        key = b'rRGzog3LDqIOoCZztjIMJyZ1nCBFkNTbIrwx2sfWf8k='
         cipher = Fernet(key)
         decrypted_data = cipher.decrypt(bytes(encrypted_data, 'utf-8')).decode('utf-8')
         decrypted_data = json.loads(decrypted_data)
