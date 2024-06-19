@@ -8,6 +8,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.http import JsonResponse
 from rest_framework import permissions
@@ -26,6 +27,7 @@ from rest_framework.decorators import api_view
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from cryptography.fernet import Fernet
 
 from .models import *
 from .serializers import UserSerializer, PortfolieImagesSerializer
@@ -45,7 +47,7 @@ from .forms import MyAuthenticationForm, RestaurantForm, RestaurantImageForm
 lock = threading.Lock()
 condition = threading.Condition(lock)
 
-
+@csrf_exempt
 def create_certificate_endpoint(request):
     if request.method == 'POST':
         data = json.loads(request.body)
