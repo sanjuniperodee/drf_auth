@@ -47,40 +47,23 @@ from .forms import MyAuthenticationForm, RestaurantForm, RestaurantImageForm
 lock = threading.Lock()
 condition = threading.Condition(lock)
 
+
 @csrf_exempt
 def create_certificate_endpoint(request):
-    if request.method == 'POST':
-        data = request.body
-        key = b'rRGzog3LDqIOoCZztjIMJyZ1nCBFkNTbIrwx2sfWf8k='
-        cipher = Fernet(key)
-        decrypted_data = cipher.decrypt(data).decode()
-        string_fixed = decrypted_data.replace("'", '"')
+    data = request.body
+    key = b'rRGzog3LDqIOoCZztjIMJyZ1nCBFkNTbIrwx2sfWf8k='
+    cipher = Fernet(key)
+    decrypted_data = cipher.decrypt(data).decode()
+    string_fixed = decrypted_data.replace("'", '"')
 
-        try:
-            json_obj = json.loads(string_fixed)
-        except json.JSONDecodeError as e:
-            print(f"Ошибка при разборе JSON: {e}")
-
-        user_phone = json_obj.get('contract', None)
-        sum_of_credit_id = json_obj.get('sum', None)
-
-        user = get_object_or_404(User, phone_number=user_phone)
-        sum_of_credit = get_object_or_404(SumOfCredit, pk=sum_of_credit_id)
-        period_of_credit = get_object_or_404(PeriodOfCredit, months=3)
-
-        # Create Certificate object
-        Certificate.objects.create(
-            sum=sum_of_credit,
-            period=period_of_credit,
-            user=user,
-            status=False,  # Default status
-            start_date=None,  # You may set these as needed
-            end_date=None
-        )
-
+    try:
+        json_obj = json.loads(string_fixed)
+        print(json_obj)
         return JsonResponse({'message': 'Certificate created successfully'}, status=201)
+    except json.JSONDecodeError as e:
+        print(f"Ошибка при разборе JSON: {e}")
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 class HandleLeadRequest(APIView):
     def post(self, request):
