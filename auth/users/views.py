@@ -51,14 +51,18 @@ condition = threading.Condition(lock)
 def create_certificate_endpoint(request):
     if request.method == 'POST':
         data = request.body
-        print(data)
         key = b'rRGzog3LDqIOoCZztjIMJyZ1nCBFkNTbIrwx2sfWf8k='
         cipher = Fernet(key)
         decrypted_data = cipher.decrypt(data).decode()
-        decrypted_data = json.loads(decrypted_data)
+        string_fixed = decrypted_data.replace("'", '"')
 
-        user_phone = decrypted_data.get('contract', None)
-        sum_of_credit_id = decrypted_data.get('sum', None)
+        try:
+            json_obj = json.loads(string_fixed)
+        except json.JSONDecodeError as e:
+            print(f"Ошибка при разборе JSON: {e}")
+
+        user_phone = json_obj.get('contract', None)
+        sum_of_credit_id = json_obj.get('sum', None)
 
         user = get_object_or_404(User, phone_number=user_phone)
         sum_of_credit = get_object_or_404(SumOfCredit, pk=sum_of_credit_id)
