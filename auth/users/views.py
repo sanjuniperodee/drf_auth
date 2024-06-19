@@ -64,7 +64,7 @@ def create_certificate_endpoint(request):
 
         user = User.objects.filter(phone_number=user_phone).first()
         sum_of_credit = SumOfCredit.objects.filter(sum=sum_of_credit_id).first()
-        period_of_credit = PeriodOfCredit.objects.filter(months=3)
+        period_of_credit = PeriodOfCredit.objects.filter(months=3).first()
         print(user_phone, sum_of_credit)
         # Create Certificate object
         Certificate.objects.create(
