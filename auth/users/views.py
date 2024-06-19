@@ -50,12 +50,12 @@ condition = threading.Condition(lock)
 @csrf_exempt
 def create_certificate_endpoint(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
+        data = request.body
         print(data)
         encrypted_data = data.get('encrypted_data', None)
         key = b'rRGzog3LDqIOoCZztjIMJyZ1nCBFkNTbIrwx2sfWf8k='
         cipher = Fernet(key)
-        decrypted_data = cipher.decrypt(bytes(encrypted_data, 'utf-8')).decode('utf-8')
+        decrypted_data = cipher.decrypt(data).decode()
         decrypted_data = json.loads(decrypted_data)
 
         user_phone = decrypted_data.get('contract', None)
