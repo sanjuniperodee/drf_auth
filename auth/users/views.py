@@ -65,7 +65,7 @@ def create_certificate_endpoint(request):
         user = get_object_or_404(User, phone_number=user_phone)
         sum_of_credit = get_object_or_404(SumOfCredit, pk=sum_of_credit_id)
         period_of_credit = get_object_or_404(PeriodOfCredit, months=3)
-
+        print(user_phone, sum_of_credit)
         # Create Certificate object
         Certificate.objects.create(
             sum=sum_of_credit,
