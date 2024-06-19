@@ -51,6 +51,7 @@ condition = threading.Condition(lock)
 def create_certificate_endpoint(request):
     if request.method == 'POST':
         data = json.loads(request.body)
+        print(data)
         encrypted_data = data.get('encrypted_data', None)
         key = "b'rRGzog3LDqIOoCZztjIMJyZ1nCBFkNTbIrwx2sfWf8k='"
         cipher = Fernet(key)
