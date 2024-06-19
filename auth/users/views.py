@@ -71,9 +71,7 @@ def create_certificate_endpoint(request):
             sum=sum_of_credit,
             period=period_of_credit,
             user=user,
-            status=False,  # Default status
-            start_date=None,  # You may set these as needed
-            end_date=None
+            status=False,
         )
         return JsonResponse({'message': 'Certificate created successfully'}, status=200)
     except json.JSONDecodeError as e:
